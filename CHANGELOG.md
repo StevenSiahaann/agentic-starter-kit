@@ -6,6 +6,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [2.3.0] - 2026-11-16
+
+### Added
+- **Unified Developer Experience (DX) Standard `Makefile`**: Root POSIX-compliant command runner supporting `make verify`, `make self-test`, `make sync TARGET=..`, `make canary`, `make audit`, and `make clean`.
+- **Dead Letter Queue (DLQ) & Poison-Pill Replay Worker (`dlq-worker-replay.ts`)**: Resilient async event handling with Exponential Backoff + Full Jitter, automated terminal failure quarantine to PostgreSQL `dead_letter_events`, and idempotent batch replay engine.
+- **Zero-Dependency Synthetic Canary & E2E Smoke Harness (`smoke-canary-harness.ts`)**: Fast post-deployment verification of `/livez`, `/readyz`, OpenAPI spec `/api/openapi.json`, Swagger UI `/api/docs`, and latency budget ($p95 < 200\text{ms}$) with W3C `traceparent` propagation.
+- **Mutation Testing Standard (Stryker) & Chaos Fault Injection Recipe**: Integrated Section 5 & 6 into `06-testing-strategy.md` requiring $\ge 80\%$ Mutation Score on domain logic, alongside `.agents/templates/stryker.config.json` configuration template.
+- **Framework Self-Test Expansion**: Added automated assertions for exponential backoff full jitter bounds in `harness-self-test.mjs`.
+
+---
+
 ## [2.2.0] - 2026-11-16
 
 ### Added

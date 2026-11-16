@@ -9,7 +9,7 @@ This repository provides a **production-grade, universal AI engineering framewor
 ```text
 .
 ├── .agents/
-│   ├── VERSION                          # Semantic Version Stamp (2.2.0) for Multi-Project Sync Tracking
+│   ├── VERSION                          # Semantic Version Stamp (2.3.0) for Multi-Project Sync Tracking
 │   ├── hooks.json                       # Native Antigravity Lifecycle Hooks (PreToolUse & PostToolUse)
 │   ├── project-context.example.md       # Project-Specific Override Template (Protected during Sync)
 │   ├── rules/                           # 18 Modular Engineering Standards (3-Tier Progressive Disclosure)
@@ -18,7 +18,7 @@ This repository provides a **production-grade, universal AI engineering framewor
 │   │   ├── 03-architecture-and-code.md  # [glob: Backend] Clean Architecture, Use-Case Driven, Result<T, E>
 │   │   ├── 04-database-and-cqrs.md      # [glob: DB] CQRS 3NF vs Read Projections, UUIDv7, Pool & Timeouts
 │   │   ├── 05-observability-otel.md     # [glob: Code] AsyncLocalStorage Trace Correlation, OTel W3C, NDJSON
-│   │   ├── 06-testing-strategy.md       # [glob: Test] Testing Pyramid (70/20/10), AAA Pattern, Mock Boundaries
+│   │   ├── 06-testing-strategy.md       # [glob: Test] Testing Pyramid, AAA, Mock Boundaries, Mutation Testing (Stryker)
 │   │   ├── 07-git-branch-and-pr.md      # [model_decision] Trunk-Based Development, Branch Regex, PR Limits
 │   │   ├── 08-devops-and-iac.md         # [glob: Infra] Multi-Stage Distroless Docker, Non-Root, Terraform State
 │   │   ├── 09-frontend-engineering.md   # [glob: FE] State Triad, RHF+Zod, Zero CLS, Browser Security Hardening
@@ -55,10 +55,13 @@ This repository provides a **production-grade, universal AI engineering framewor
 │   │       └── harness-verify.sh        # 1-Click 5-Gate Deterministic Verification Suite
 │   ├── scripts/
 │   │   └── sync-to-project.sh           # Multi-Project Rollout & Upgrade CLI for Engineering Managers
-│   └── templates/                       # 17 Production-Ready Boilerplates (100% Verified)
+│   └── templates/                       # 20 Production-Ready Boilerplates (100% Verified)
 │       ├── harness/                     # Application Test Harness Templates
 │       │   ├── integration-harness.ts   # Docker Testcontainers (PostgreSQL 16 + Redis 7 Ephemeral Runner)
-│       │   └── frontend-render-harness.tsx # RTL Custom Render + QueryClient + MemoryRouter Wrapper
+│       │   ├── frontend-render-harness.tsx # RTL Custom Render + QueryClient + MemoryRouter Wrapper
+│       │   └── smoke-canary-harness.ts  # Zero-Dependency Synthetic Canary Probe (/livez, /readyz, OpenAPI, Latency)
+│       ├── dlq-worker-replay.ts         # Dead Letter Queue & Poison-Pill Quarantine with Exponential Backoff
+│       ├── stryker.config.json          # Mutation Testing Configuration (80% Mutation Score Quality Gate)
 │       ├── use-case-template.ts         # Clean Architecture Handler + Native RFC 9562 UUIDv7 + Outbox + Result
 │       ├── openapi-swagger-registry.ts  # OpenAPI 3.1 JSON Spec & Interactive Swagger UI (/api/docs) Generator
 │       ├── http-trace-error-middleware.ts # W3C traceparent Ingress + AsyncLocalStorage + RFC 7807 Error Filter
@@ -74,6 +77,7 @@ This repository provides a **production-grade, universal AI engineering framewor
 │       ├── otel-logger.ts               # Structured NDJSON Logger + AsyncLocalStorage + Recursive PII Scrubber
 │       ├── Dockerfile.distroless        # Multi-Stage Distroless Non-Root + Native Node /livez Healthcheck
 │       └── terraform-base.tf            # Encrypted Terraform S3 Remote State + DynamoDB State Locking
+├── Makefile                             # POSIX Standard Command Runner (make verify, make sync, make canary)
 ├── .claude/                             # Native Claude Code Configuration
 │   ├── settings.json                    # Native Claude Code PreToolUse & PostToolUse Hooks
 │   ├── agents/                          # 6 Native Claude Code Subagents (*.md)
@@ -130,6 +134,9 @@ Use the automated `sync-to-project.sh` CLI to install or upgrade this framework 
 # 2. Customize the target project's specific tech stack & bounded contexts in:
 #    /path/to/target-project/.agents/project-context.md
 
-# 3. Run the 5-Gate Verification Harness at any time:
-./.agents/hooks/scripts/harness-verify.sh
+# 3. Run the 5-Gate Verification Harness at any time (or via Makefile):
+make verify          # Runs 5-gate security, architecture, syntax, and self-test harness
+make self-test       # Runs zero-dependency runtime self-test
+make canary          # Runs synthetic smoke canary check against running instance
+make sync TARGET=..  # Rolls out framework into a target repository
 ```

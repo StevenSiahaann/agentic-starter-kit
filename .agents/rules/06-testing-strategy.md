@@ -99,3 +99,32 @@ CI pipelines block merges if coverage drops below these mandatory thresholds:
 - **Domain Layer (`src/domain/` or `src/modules/*/domain/`)**: Minimum **95% Branch Coverage**.
 - **Application Layer (`src/application/` or `src/modules/*/application/`)**: Minimum **85% Line Coverage**.
 - **Overall Project Coverage**: Minimum **80% Line Coverage**.
+
+---
+
+## 5. Mutation Testing Standard (Stryker)
+
+High line and branch coverage can be deceptive if test assertions are superficial (*Assertion Roulette*). To guarantee tests catch real production defects, enforce Mutation Testing on domain models:
+- **Tooling**: Stryker Mutator (`stryker.config.json`).
+- **Target**: Domain calculations, financial ledgers, state machine transitions, and access control policies.
+- **Quality Gate**: Minimum **80% Mutation Score** ($(\text{Killed Mutants} / \text{Total Mutants}) \times 100 \ge 80\%$).
+- **Surviving Mutants Investigation**: If a mutant survives (e.g. replacing `>` with `>=` or negating a conditional without causing a test failure), the test suite MUST be strengthened with targeted boundary assertions.
+
+---
+
+## 6. Chaos & Transient Fault Injection
+
+Distributed systems fail unpredictably. Critical use-cases and repository adapters MUST be tested against transient infrastructure disruptions:
+- **Database Connection Timeout**: Simulate Postgres socket hanging; verify that the connection pool rejects or fails over within `timeoutMs` (RFC 7807 503 Service Unavailable).
+- **Transient Network Glitches**: Inject 500ms latency or random HTTP 502 Bad Gateway on third-party integrations; verify that the Circuit Breaker (`circuit-breaker-client.ts`) trips to `OPEN` state after $N$ failures and executes safe fallbacks.
+- **Cache Eviction / Stampede**: Invalidate Redis keys under concurrent requests; verify that Jittered TTL (`13-caching-and-rate-limiting.md`) prevents thundering herd database saturation.
+
+---
+
+## 7. Synthetic Canary Smoke Verification
+
+Post-deployment in staging or production environments, execute the zero-dependency Canary Harness (`.agents/templates/harness/smoke-canary-harness.ts`):
+- Verify Kubernetes `/livez` and `/readyz` health endpoints return HTTP 200 within $< 50\text{ms}$.
+- Verify Contract-First OpenAPI specification (`/api/openapi.json`) and Swagger UI (`/api/docs`).
+- Assert W3C distributed `traceparent` header propagation and enforce latency budget ($p95 < 200\text{ms}$).
+

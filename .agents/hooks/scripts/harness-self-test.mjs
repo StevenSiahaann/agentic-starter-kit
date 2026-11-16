@@ -75,3 +75,16 @@ const b1 = computeBucket('new-checkout', 'user-42');
 const b2 = computeBucket('new-checkout', 'user-42');
 assert.equal(b1, b2, 'Consistent hashing must be deterministic for the same user');
 assert.equal(b1 >= 0 && b1 < 100, true, 'Bucket must be in range 0..99');
+
+// 5. Test Exponential Backoff with Full Jitter Bounds
+function computeBackoff(attempt, initialDelay = 100, maxDelay = 1000, factor = 2) {
+  const cap = Math.min(maxDelay, initialDelay * Math.pow(factor, attempt));
+  return Math.floor(Math.random() * (cap + 1));
+}
+
+for (let attempt = 0; attempt < 5; attempt++) {
+  const delay = computeBackoff(attempt);
+  const maxPossible = Math.min(1000, 100 * Math.pow(2, attempt));
+  assert.equal(delay >= 0 && delay <= maxPossible, true, `Backoff delay ${delay} must be within [0, ${maxPossible}]`);
+}
+
