@@ -87,6 +87,22 @@ cp "$SOURCE_ROOT/.editorconfig" "$TARGET_DIR/.editorconfig"
 cp "$SOURCE_ROOT/.github/PULL_REQUEST_TEMPLATE.md" "$TARGET_DIR/.github/PULL_REQUEST_TEMPLATE.md"
 cp "$SOURCE_ROOT/.github/copilot-instructions.md" "$TARGET_DIR/.github/copilot-instructions.md"
 
+if [[ ! -f "$TARGET_DIR/Makefile" ]]; then
+    cp "$SOURCE_ROOT/Makefile" "$TARGET_DIR/Makefile"
+    echo -e "${GREEN}  -> Installed standard Makefile.${NC}"
+fi
+
+if [[ ! -f "$TARGET_DIR/docker-compose.yml" ]]; then
+    cp "$SOURCE_ROOT/docker-compose.yml" "$TARGET_DIR/docker-compose.yml"
+    echo -e "${GREEN}  -> Installed local development docker-compose.yml stack.${NC}"
+fi
+
+mkdir -p "$TARGET_DIR/docs/architecture"
+if [[ ! -f "$TARGET_DIR/docs/architecture/system-overview.md" ]]; then
+    cp "$SOURCE_ROOT/docs/architecture/system-overview.md" "$TARGET_DIR/docs/architecture/system-overview.md"
+    echo -e "${GREEN}  -> Installed C4 Architecture documentation.${NC}"
+fi
+
 if [[ ! -f "$TARGET_DIR/.github/CODEOWNERS" ]]; then
     cp "$SOURCE_ROOT/.github/CODEOWNERS" "$TARGET_DIR/.github/CODEOWNERS"
 fi
@@ -102,7 +118,7 @@ else
     echo -e "${GREEN}  -> Preserved existing .github/workflows/ci-cd-pipeline.yml.${NC}"
 fi
 
-# 5. Optional: Install Native Git Pre-Commit Hook
+# 5. Optional: Install Native Git Pre-Commit & Commit-Msg Hooks
 echo -e "${YELLOW}[4/5] Checking local Git Hooks installation...${NC}"
 if [[ "$INSTALL_GIT_HOOKS" == "--with-git-hooks" && -d "$TARGET_DIR/.git/hooks" ]]; then
     cat > "$TARGET_DIR/.git/hooks/pre-commit" << 'EOF'
@@ -111,7 +127,14 @@ set -euo pipefail
 ./.agents/hooks/scripts/harness-verify.sh
 EOF
     chmod +x "$TARGET_DIR/.git/hooks/pre-commit"
-    echo -e "${GREEN}  -> Installed Git pre-commit verification hook!${NC}"
+
+    cat > "$TARGET_DIR/.git/hooks/commit-msg" << 'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+./.agents/hooks/scripts/commit-msg-guard.sh "$1"
+EOF
+    chmod +x "$TARGET_DIR/.git/hooks/commit-msg"
+    echo -e "${GREEN}  -> Installed Git pre-commit & commit-msg verification hooks!${NC}"
 else
     echo -e "  -> Skipped Git hook installation (pass --with-git-hooks to enable)."
 fi

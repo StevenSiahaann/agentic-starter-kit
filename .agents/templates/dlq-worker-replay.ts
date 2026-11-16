@@ -115,7 +115,7 @@ export async function executeWithRetryAndDlq<TPayload extends Record<string, unk
       return { success: true, quarantined: false };
     } catch (err: unknown) {
       lastError = err instanceof Error ? err : new Error(String(err));
-      
+
       params.logger.warn('Event processing attempt failed, backing off', {
         eventId: params.eventId,
         eventType: params.eventType,
@@ -195,7 +195,7 @@ export async function replayDlqBatch<TPayload extends Record<string, unknown>>(p
     } catch (replayError: unknown) {
       failedCount++;
       const err = replayError instanceof Error ? replayError : new Error(String(replayError));
-      
+
       params.logger.error('Failed to replay dead letter record', {
         dlqId: record.id,
         originalEventId: record.originalEventId,

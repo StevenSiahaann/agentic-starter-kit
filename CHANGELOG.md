@@ -6,6 +6,16 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [2.4.0] - 2026-11-16
+
+### Added
+- **Consolidated Enterprise Database Baseline (`schema-baseline.sql`)**: 1-click PostgreSQL 16 DDL initializing `idempotency_keys`, `outbox_events`, `inbox_events`, `dead_letter_events`, `ledger_entries`, and `audit_logs` with UUIDv7, FK indexes, and active Row-Level Security (RLS) policies.
+- **Local Development Infrastructure Stack (`docker-compose.yml`)**: PostgreSQL 16 Alpine (with auto-initialization of `schema-baseline.sql`), Redis 7 Alpine, and Jaeger All-in-One distributed tracing UI (`:16686` and OTLP HTTP `:4318`), integrated into `make up` and `make down`.
+- **Architecture-as-Code C4 Model (`docs/architecture/system-overview.md`)**: Complete Mermaid diagrams covering C4 Level 1 (System Context), Level 2 (Container Runtime), Level 3 (Clean Architecture sequence flow), and Asynchronous Event Outbox/DLQ lifecycle.
+- **Git `commit-msg` Hook Linter (`commit-msg-guard.sh`)**: Enforces Conventional Commits specification locally before commits can be authored, integrated into `sync-to-project.sh`.
+
+---
+
 ## [2.3.0] - 2026-11-16
 
 ### Added

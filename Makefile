@@ -1,7 +1,7 @@
 # ==============================================================================
 # Makefile - Universal Enterprise AI Engineering Framework Standard
 # ==============================================================================
-.PHONY: help verify self-test sync canary audit clean
+.PHONY: help verify self-test sync canary audit clean up down
 
 SHELL := /bin/bash
 TARGET ?= ""
@@ -17,8 +17,20 @@ help:
 	@echo "  make sync TARGET=..  Rollout or upgrade framework into target repository"
 	@echo "  make canary          Run synthetic smoke canary health check"
 	@echo "  make audit           Execute secret scanner and dependency check"
+	@echo "  make up              Start local PostgreSQL, Redis, and Jaeger containers"
+	@echo "  make down            Stop local infrastructure containers"
 	@echo "  make clean           Clean transient build artifacts and temporary caches"
 	@echo "=================================================================="
+
+up:
+	@echo "[DOCKER] Starting local PostgreSQL, Redis, and Jaeger OTel stack..."
+	@docker compose up -d
+	@echo "[DOCKER] Stack running. Jaeger UI: http://localhost:16686"
+
+down:
+	@echo "[DOCKER] Stopping local infrastructure stack..."
+	@docker compose down
+
 
 verify:
 	@chmod +x .agents/hooks/scripts/*.sh

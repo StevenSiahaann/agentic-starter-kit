@@ -9,7 +9,7 @@ This repository provides a **production-grade, universal AI engineering framewor
 ```text
 .
 ├── .agents/
-│   ├── VERSION                          # Semantic Version Stamp (2.3.0) for Multi-Project Sync Tracking
+│   ├── VERSION                          # Semantic Version Stamp (2.4.0) for Multi-Project Sync Tracking
 │   ├── hooks.json                       # Native Antigravity Lifecycle Hooks (PreToolUse & PostToolUse)
 │   ├── project-context.example.md       # Project-Specific Override Template (Protected during Sync)
 │   ├── rules/                           # 18 Modular Engineering Standards (3-Tier Progressive Disclosure)
@@ -50,16 +50,18 @@ This repository provides a **production-grade, universal AI engineering framewor
 │   │   ├── hooks.json                   # Mirror PreToolUse & PostToolUse Configuration
 │   │   └── scripts/
 │   │       ├── pre-command-guard.sh     # 5-Layer Defense-in-Depth Agent Safety Harness
+│   │       ├── commit-msg-guard.sh      # Conventional Commits Specification Linter Hook
 │   │       ├── post-edit-styler.sh      # Architectural Invariant Checker & Auto-Formatter
 │   │       ├── harness-self-test.mjs    # Zero-Dependency Core Algorithm Self-Test Suite
 │   │       └── harness-verify.sh        # 1-Click 5-Gate Deterministic Verification Suite
 │   ├── scripts/
 │   │   └── sync-to-project.sh           # Multi-Project Rollout & Upgrade CLI for Engineering Managers
-│   └── templates/                       # 20 Production-Ready Boilerplates (100% Verified)
+│   └── templates/                       # 21 Production-Ready Boilerplates (100% Verified)
 │       ├── harness/                     # Application Test Harness Templates
 │       │   ├── integration-harness.ts   # Docker Testcontainers (PostgreSQL 16 + Redis 7 Ephemeral Runner)
 │       │   ├── frontend-render-harness.tsx # RTL Custom Render + QueryClient + MemoryRouter Wrapper
 │       │   └── smoke-canary-harness.ts  # Zero-Dependency Synthetic Canary Probe (/livez, /readyz, OpenAPI, Latency)
+│       ├── schema-baseline.sql          # Consolidated PostgreSQL 16 DDL with RLS, Outbox, DLQ & Ledger
 │       ├── dlq-worker-replay.ts         # Dead Letter Queue & Poison-Pill Quarantine with Exponential Backoff
 │       ├── stryker.config.json          # Mutation Testing Configuration (80% Mutation Score Quality Gate)
 │       ├── use-case-template.ts         # Clean Architecture Handler + Native RFC 9562 UUIDv7 + Outbox + Result
@@ -77,7 +79,11 @@ This repository provides a **production-grade, universal AI engineering framewor
 │       ├── otel-logger.ts               # Structured NDJSON Logger + AsyncLocalStorage + Recursive PII Scrubber
 │       ├── Dockerfile.distroless        # Multi-Stage Distroless Non-Root + Native Node /livez Healthcheck
 │       └── terraform-base.tf            # Encrypted Terraform S3 Remote State + DynamoDB State Locking
-├── Makefile                             # POSIX Standard Command Runner (make verify, make sync, make canary)
+├── Makefile                             # POSIX Standard Command Runner (make verify, make up, make sync)
+├── docker-compose.yml                   # Local Dev Stack: PostgreSQL 16 (auto-init), Redis 7, Jaeger OTel
+├── docs/                                # Visual Architecture & System Documentation
+│   └── architecture/
+│       └── system-overview.md           # C4 Architecture Diagrams as Code (Mermaid)
 ├── .claude/                             # Native Claude Code Configuration
 │   ├── settings.json                    # Native Claude Code PreToolUse & PostToolUse Hooks
 │   ├── agents/                          # 6 Native Claude Code Subagents (*.md)

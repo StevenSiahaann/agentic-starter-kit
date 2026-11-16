@@ -198,3 +198,4 @@ export async function runCanaryCli(targetUrl: string = process.env.CANARY_BASE_U
     process.exitCode = 1;
   }
 }
+
