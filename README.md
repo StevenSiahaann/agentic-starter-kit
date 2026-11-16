@@ -9,9 +9,10 @@ This repository provides a **production-grade, universal AI engineering framewor
 ```text
 .
 ├── .agents/
+│   ├── VERSION                          # Semantic Version Stamp (2.2.0) for Multi-Project Sync Tracking
 │   ├── hooks.json                       # Native Antigravity Lifecycle Hooks (PreToolUse & PostToolUse)
 │   ├── project-context.example.md       # Project-Specific Override Template (Protected during Sync)
-│   ├── rules/                           # 17 Modular Engineering Standards (3-Tier Progressive Disclosure)
+│   ├── rules/                           # 18 Modular Engineering Standards (3-Tier Progressive Disclosure)
 │   │   ├── 01-security-and-owasp.md     # [glob: Code/SQL] OWASP Top 10 Web (A01-A10) & OWASP LLM (LLM01-LLM10)
 │   │   ├── 02-ui-ux-human-craft.md      # [glob: UI] Anti-Glassmorphism, Solid Surfaces, Tactile Physics
 │   │   ├── 03-architecture-and-code.md  # [glob: Backend] Clean Architecture, Use-Case Driven, Result<T, E>
@@ -23,19 +24,21 @@ This repository provides a **production-grade, universal AI engineering framewor
 │   │   ├── 09-frontend-engineering.md   # [glob: FE] State Triad, RHF+Zod, Zero CLS, Browser Security Hardening
 │   │   ├── 10-monolith-vs-microservices.md # [model_decision] ADR Matrix, Modular Monolith, Outbox, Saga
 │   │   ├── 11-computational-complexity-and-metrics.md # [glob: Code/SQL] Big-O O(1) Lookups, CWV/RED/USE/DORA SLOs
-│   │   ├── 12-api-design-and-versioning.md # [glob: API/DTO] Contract-First OpenAPI 3.1, Envelopes, /api/v1/
+│   │   ├── 12-api-design-and-versioning.md # [glob: API/DTO] OpenAPI 3.1 / Swagger UI (/api/docs), Envelopes, /api/v1/
 │   │   ├── 13-caching-and-rate-limiting.md # [glob: Cache/DB] Jittered TTL Anti-Stampede, SKIP LOCKED, RateLimit
 │   │   ├── 14-data-privacy-and-compliance.md # [model_decision] 4-Tier PII Classification, Redaction, audit_logs
 │   │   ├── 15-financial-time-and-i18n.md # [model_decision] Minor Units, Banker's Rounding, Double-Entry Ledger
 │   │   ├── 16-webhooks-and-event-contracts.md # [model_decision] HMAC timingSafeEqual, 5m Replay Guard, Inbox
-│   │   └── 17-feature-flags-and-progressive-delivery.md # [model_decision] SHA-256 Consistent Hashing & Kill-Switches
-│   ├── skills/                          # 6 Actionable Engineering Skills / Runbooks (On-Demand)
+│   │   ├── 17-feature-flags-and-progressive-delivery.md # [model_decision] SHA-256 Consistent Hashing & Kill-Switches
+│   │   └── 18-multi-tenancy-and-background-jobs.md # [model_decision] PostgreSQL RLS & Resumable Chunked Cron Jobs
+│   ├── skills/                          # 7 Actionable Engineering Skills / Runbooks (On-Demand)
 │   │   ├── scaffold-vertical-slice/     # End-to-End Feature Slice Generator (Domain -> UseCase -> Port -> Test)
 │   │   ├── staff-pr-review/             # 6-Pillar Staff Engineer PR & Code Review Rubric
 │   │   ├── owasp-security-audit/        # OWASP Web (A01-A10) & LLM (LLM01-LLM10) Security Assessment Runbook
 │   │   ├── zero-downtime-migration/     # Lock-Free Expand-and-Contract Database Migration Validator
 │   │   ├── adr-writer/                  # Architecture Decision Record Generator (docs/adr/)
-│   │   └── incident-rca-postmortem/     # Blameless 5-Whys Root Cause Analysis & Postmortem Generator
+│   │   ├── incident-rca-postmortem/     # Blameless 5-Whys Root Cause Analysis & Postmortem Generator
+│   │   └── legacy-strangler-refactoring/# Legacy Codebase Modernization via Characterization Tests & Strangler Fig
 │   ├── agents/                          # 6 Specialist Subagents (Native Markdown Frontmatter + JSON)
 │   │   ├── coordinator.{md,json}        # Lead Engineering Manager & Task Orchestrator
 │   │   ├── security-auditor.{md,json}   # Read-Only Security & OWASP Pentester (Least Privilege)
@@ -48,14 +51,18 @@ This repository provides a **production-grade, universal AI engineering framewor
 │   │   └── scripts/
 │   │       ├── pre-command-guard.sh     # 5-Layer Defense-in-Depth Agent Safety Harness
 │   │       ├── post-edit-styler.sh      # Architectural Invariant Checker & Auto-Formatter
+│   │       ├── harness-self-test.mjs    # Zero-Dependency Core Algorithm Self-Test Suite
 │   │       └── harness-verify.sh        # 1-Click 5-Gate Deterministic Verification Suite
 │   ├── scripts/
 │   │   └── sync-to-project.sh           # Multi-Project Rollout & Upgrade CLI for Engineering Managers
-│   └── templates/                       # 14 Production-Ready Boilerplates (100% Verified)
+│   └── templates/                       # 17 Production-Ready Boilerplates (100% Verified)
 │       ├── harness/                     # Application Test Harness Templates
 │       │   ├── integration-harness.ts   # Docker Testcontainers (PostgreSQL 16 + Redis 7 Ephemeral Runner)
 │       │   └── frontend-render-harness.tsx # RTL Custom Render + QueryClient + MemoryRouter Wrapper
 │       ├── use-case-template.ts         # Clean Architecture Handler + Native RFC 9562 UUIDv7 + Outbox + Result
+│       ├── openapi-swagger-registry.ts  # OpenAPI 3.1 JSON Spec & Interactive Swagger UI (/api/docs) Generator
+│       ├── http-trace-error-middleware.ts # W3C traceparent Ingress + AsyncLocalStorage + RFC 7807 Error Filter
+│       ├── env-validator.ts             # Fail-Fast Boot-Time Environment Variable & Secret Entropy Validator
 │       ├── idempotency-middleware.ts    # Scoped Idempotency-Key Lock, Response Capture & Cache Replay
 │       ├── circuit-breaker-client.ts    # Rolling-Window Circuit Breaker + Half-Open Probe Gate + Full Jitter
 │       ├── saga-coordinator.ts          # Distributed Saga Orchestrator + LIFO Rollback + DLQ + OTel Log

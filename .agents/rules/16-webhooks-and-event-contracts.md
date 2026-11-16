@@ -73,3 +73,4 @@ Format all published domain events and outbound webhooks using the standard **Cl
 }
 ```
 * **Schema Evolution Rule**: Never remove or change the type of existing fields inside `v1` events. Introduce incompatible payload changes under a new versioned event type (`com.domain.order.created.v2`).
+

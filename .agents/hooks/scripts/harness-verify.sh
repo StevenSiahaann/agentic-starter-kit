@@ -132,21 +132,28 @@ else
     echo -e "${YELLOW}[SKIP] No tsconfig.json found or npm not initialized.${NC}"
 fi
 
-# 5. GATE 5: AUTOMATED TEST SUITE
-echo -e "\n${YELLOW}[Gate 5/5] Executing Test Suite...${NC}"
+# 5. GATE 5: AUTOMATED TEST SUITE & SELF-TEST
+echo -e "\n${YELLOW}[Gate 5/5] Executing Framework Self-Test & Project Test Suite...${NC}"
+if command -v node >/dev/null 2>&1 && [[ -f ".agents/hooks/scripts/harness-self-test.mjs" ]]; then
+    if node .agents/hooks/scripts/harness-self-test.mjs; then
+        echo -e "${GREEN}[PASS] Framework core algorithms self-test passed (UUIDv7, PII Scrubber, HMAC, Consistent Hash).${NC}"
+    else
+        echo -e "${RED}[FAIL] Framework self-test failed!${NC}"
+        ERRORS=$((ERRORS + 1))
+    fi
+fi
+
 if [[ -f "package.json" ]] && command -v npm >/dev/null 2>&1; then
     if npm run | grep -q "test"; then
         if npm test; then
-            echo -e "${GREEN}[PASS] All automated tests passed successfully.${NC}"
+            echo -e "${GREEN}[PASS] All project automated tests passed successfully.${NC}"
         else
-            echo -e "${RED}[FAIL] Test suite failed!${NC}"
+            echo -e "${RED}[FAIL] Project test suite failed!${NC}"
             ERRORS=$((ERRORS + 1))
         fi
     else
         echo -e "${YELLOW}[SKIP] No 'test' script defined in package.json.${NC}"
     fi
-else
-    echo -e "${YELLOW}[SKIP] No package.json found.${NC}"
 fi
 
 # ------------------------------------------------------------------------------

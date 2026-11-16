@@ -1,33 +1,47 @@
 ---
 trigger: glob
-globs: "**/*controller*.ts, **/*route*.ts, **/*router*.ts, **/*dto*.ts, **/*schema*.ts, **/openapi*"
+globs: "**/*controller*.ts, **/*route*.ts, **/*router*.ts, **/*dto*.ts, **/*schema*.ts, **/openapi*, **/swagger*"
 ---
 
-# API Design, Contract-First OpenAPI, & Versioning Standards
+# API Design, OpenAPI 3.1 / Swagger Documentation, & Versioning Standards
 
 > **Status:** MANDATORY API ENGINEERING STANDARD  
-> **Target:** All REST/HTTP Endpoints, gRPC Contracts, Request/Response DTOs, and Public Webhooks.
+> **Target:** All REST/HTTP Endpoints, Swagger/OpenAPI Specs, Request/Response DTOs, and Public Webhooks.
 
 ---
 
-## 1. Contract-First & Schema-Driven API Design
+## 1. Automated OpenAPI 3.1 & Interactive Swagger UI Standard
 
-Every API endpoint MUST be governed by an explicit, machine-verifiable schema (Zod-to-OpenAPI 3.1, TypeBox, or Protocol Buffers):
-- **Single Source of Truth**: Generate OpenAPI 3.1 specifications and Frontend TypeScript client types directly from the validated backend Zod/DTO schemas. Never maintain disconnected manual API docs.
-- **Strict Input Whitelisting**: Configure boundary Zod schemas to reject or strip unknown properties (`.strict()` on security-sensitive mutations) to prevent Mass Assignment vulnerabilities.
+Never maintain manual Postman collections or hand-edited YAML files that drift from actual controller implementations. Every backend HTTP service MUST automatically generate an **OpenAPI 3.1 Specification** directly from its validated route/DTO schemas (`@asteasolutions/zod-to-openapi`, Fastify Swagger, or NestJS Swagger).
+
+### A. Mandatory Documentation Endpoints
+Every service MUST expose:
+1. **`GET /api/openapi.json`**: Machine-readable OpenAPI 3.1 JSON contract (used in CI to generate type-safe Frontend clients via `openapi-typescript` and detect breaking contract diffs).
+2. **`GET /api/docs`**: Interactive **Swagger UI / Scalar API Reference** allowing Frontend, Mobile, and QA engineers to inspect schemas and test endpoints directly in the browser.
+   - **Environment Gate**: Enable `/api/docs` by default in `development` and `staging`. In `production`, gate `/api/docs` behind internal VPN / admin authentication or disable via `ENABLE_SWAGGER_UI=false`.
+
+### B. Mandatory OpenAPI Metadata per Endpoint
+Every registered endpoint MUST declare:
+- **`operationId` & `tags`**: Unique camelCase `operationId` (e.g., `createOrder`) and logical domain tag (`Orders`, `Billing`, `Identity`).
+- **Security Schemes**: Explicit `BearerAuth` (JWT) and required `Idempotency-Key` header parameter on state-mutating routes (`POST`, `PUT`, `PATCH`).
+- **Complete Response Matrix**: Document both the `200`/`201` typed success envelope AND the standard `400`, `401`, `403`, `404`, `409`, `422`, `429`, and `500` **RFC 7807 Problem Details** schemas.
+- **Reference Implementation**: Instantiate from [`.agents/templates/openapi-swagger-registry.ts`](../templates/openapi-swagger-registry.ts).
+
+### C. Strict Input Whitelisting
+- Configure boundary Zod schemas to reject or strip undeclared properties (`.strict()` on security-sensitive mutations) to prevent Mass Assignment vulnerabilities.
 
 ---
 
 ## 2. Standard Response & Cursor Pagination Envelopes
 
-### A. Single Resource & Collection Success Envelopes
+### A. Single Resource Success Envelope
 Maintain predictable JSON response shapes across all services:
 ```json
 {
   "data": {
     "id": "018dc320-1a2b-7c3d-9e4f-5a6b7c8d9e0f",
     "status": "PAID",
-    "total_amount": 250000,
+    "total_amount_minor": 25000000,
     "currency": "IDR",
     "created_at": "2026-11-16T12:00:00.000Z"
   },
@@ -74,7 +88,7 @@ Never introduce a breaking change within an existing major version (`v1`):
   - Changing HTTP status codes or error code enums that clients branch on.
 
 ### C. Deprecation & Sunset Headers (RFC 8594)
-When deprecating an endpoint or API version, keep `v1` operational for the agreed migration window (minimum 90 days for external clients) and emit standard HTTP headers:
+When deprecating an endpoint or API version, keep `v1` operational for the agreed migration window (minimum 90 days for external clients), mark `deprecated: true` in the OpenAPI/Swagger spec, and emit standard HTTP headers:
 ```http
 Deprecation: true
 Sunset: Wed, 18 Feb 2027 23:59:59 GMT
@@ -100,4 +114,3 @@ Link: <https://api.domain.com/api/v2/orders>; rel="successor-version"
 | `429 Too Many Requests` | Rate limit quota exceeded (must include `Retry-After` header). |
 | `500 Internal Server Error` | Masked unexpected system failure (never leak SQL/stack traces; always include `trace_id`). |
 | `503 Service Unavailable` | Downstream dependency circuit breaker is `OPEN` or service is draining during `SIGTERM`. |
-

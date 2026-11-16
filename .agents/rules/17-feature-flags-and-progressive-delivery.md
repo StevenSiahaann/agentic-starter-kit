@@ -43,3 +43,4 @@ $$\text{bucket} = \text{uint32}\left(\text{SHA-256}(\texttt{flagKey} \mathbin{\V
      - `describe('when feature flag is OFF (legacy path)', ...)`
      - `describe('when feature flag is ON (new path)', ...)`
 3. **Zero Flag Debt Rule**: When a Release Toggle reaches 100% production rollout for 14 days without incident, create a cleanup PR removing the dead `if/else` branch and flag definition.
+

@@ -39,8 +39,12 @@ if [[ "$SOURCE_ROOT" == "$TARGET_DIR" ]]; then
     exit 1
 fi
 
+SOURCE_VERSION="$(cat "$SOURCE_ROOT/.agents/VERSION" 2>/dev/null || echo "2.2.0")"
+TARGET_OLD_VERSION="$(cat "$TARGET_DIR/.agents/VERSION" 2>/dev/null || echo "none")"
+
 echo -e "${BLUE}====================================================================${NC}"
-echo -e "${BLUE}   SYNCING AGENTIC-STARTER-KIT TO: ${TARGET_DIR}${NC}"
+echo -e "${BLUE}   SYNCING AGENTIC-STARTER-KIT (v${TARGET_OLD_VERSION} -> v${SOURCE_VERSION})${NC}"
+echo -e "${BLUE}   TARGET: ${TARGET_DIR}${NC}"
 echo -e "${BLUE}====================================================================${NC}"
 
 # 1. Create directory structure in target repository
@@ -50,7 +54,7 @@ mkdir -p "$TARGET_DIR/.cursor/rules"
 mkdir -p "$TARGET_DIR/.github/workflows"
 
 # 2. Synchronize Rules, Agents, Skills, Hooks, Templates, and Scripts
-echo -e "${YELLOW}[1/5] Synchronizing .agents/ (14 rules, 6 agents, 6 skills, hooks, 12 templates)...${NC}"
+echo -e "${YELLOW}[1/5] Synchronizing .agents/ (18 rules, 6 agents, 7 skills, hooks, 17 templates)...${NC}"
 cp -R "$SOURCE_ROOT/.agents/rules" "$TARGET_DIR/.agents/"
 cp -R "$SOURCE_ROOT/.agents/agents" "$TARGET_DIR/.agents/"
 cp -R "$SOURCE_ROOT/.agents/skills" "$TARGET_DIR/.agents/"
@@ -58,6 +62,7 @@ cp -R "$SOURCE_ROOT/.agents/hooks" "$TARGET_DIR/.agents/"
 cp -R "$SOURCE_ROOT/.agents/templates" "$TARGET_DIR/.agents/"
 cp -R "$SOURCE_ROOT/.agents/scripts" "$TARGET_DIR/.agents/"
 cp "$SOURCE_ROOT/.agents/hooks.json" "$TARGET_DIR/.agents/hooks.json"
+cp "$SOURCE_ROOT/.agents/VERSION" "$TARGET_DIR/.agents/VERSION"
 cp "$SOURCE_ROOT/.agents/project-context.example.md" "$TARGET_DIR/.agents/project-context.example.md"
 chmod +x "$TARGET_DIR/.agents/hooks/scripts/"*.sh "$TARGET_DIR/.agents/scripts/"*.sh
 

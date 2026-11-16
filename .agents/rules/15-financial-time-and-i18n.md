@@ -65,3 +65,4 @@ CREATE INDEX idx_ledger_transaction ON ledger_entries(transaction_id);
 
 - **Unicode NFC Normalization**: Normalize all user-supplied strings using `.normalize('NFC')` before hashing, comparing, or storing usernames/emails (prevents homograph/canonical-equivalence bugs where `é` composed vs. decomposed produces different byte sequences).
 - **Locale-Aware Formatting**: Format currencies, numbers, and dates at the UI presentation boundary using standard `Intl.NumberFormat` and `Intl.DateTimeFormat`, never via manual string concatenation.
+

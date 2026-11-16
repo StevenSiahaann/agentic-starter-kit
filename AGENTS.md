@@ -24,12 +24,13 @@ If `.agents/project-context.md` exists in this repository, read it first. It def
 | [09-frontend-engineering.md](.agents/rules/09-frontend-engineering.md) | `glob` (Frontend) | State Triad: Server state (TanStack Query), URL state (`nuqs`), Client UI state (Zustand); React Hook Form + Zod; structural skeletons (CLS $< 0.1$); Granular Error Boundaries. |
 | [10-monolith-vs-microservices.md](.agents/rules/10-monolith-vs-microservices.md) | `model_decision` | **Modular Monolith by Default, Microservices by Exception**; Database-per-Service; Transactional Outbox Pattern; Saga Orchestrator with LIFO compensation; Circuit Breaker with Full Jitter. |
 | [11-computational-complexity-and-metrics.md](.agents/rules/11-computational-complexity-and-metrics.md) | `glob` (Code/SQL) | $O(1)$ in-memory lookups via `Map`/`Set` (forbid $O(N \times M)$ nested loops); $O(1)$ space streaming for files $>10\text{MB}$; Keyset/Cursor pagination; CWV, RED, USE, and DORA SLO targets. |
-| [12-api-design-and-versioning.md](.agents/rules/12-api-design-and-versioning.md) | `glob` (API/DTO) | Contract-First OpenAPI 3.1 / Zod schemas; standard `{ data, meta }` & cursor pagination envelopes; `/api/v1/` URI versioning; RFC 8594 `Deprecation` & `Sunset` headers. |
+| [12-api-design-and-versioning.md](.agents/rules/12-api-design-and-versioning.md) | `glob` (API/DTO) | Contract-First OpenAPI 3.1 & Swagger UI (`/api/docs`, `/api/openapi.json`); `{ data, meta }` & cursor pagination envelopes; `/api/v1/` versioning; RFC 8594 `Deprecation` & `Sunset` headers. |
 | [13-caching-and-rate-limiting.md](.agents/rules/13-caching-and-rate-limiting.md) | `glob` (Cache/DB) | Cache-Aside with **Jittered TTL** (anti-stampede); versioned cache keys; Optimistic (`version`) vs Pessimistic (`FOR UPDATE SKIP LOCKED`) locking; multi-tier `RateLimit-*` headers. |
 | [14-data-privacy-and-compliance.md](.agents/rules/14-data-privacy-and-compliance.md) | `model_decision` | 4-Tier Data Classification (`PUBLIC`, `INTERNAL`, `CONFIDENTIAL_PII`, `RESTRICTED_SECRET`); recursive PII log redaction; append-only `audit_logs` table; GDPR / UU PDP Crypto-Shredding. |
 | [15-financial-time-and-i18n.md](.agents/rules/15-financial-time-and-i18n.md) | `model_decision` | Integer minor units (`BIGINT`) / `NUMERIC(19,4)` for money (zero floats); Banker's Rounding; Double-Entry `ledger_entries`; `UTC` storage + Monotonic Clocks (`performance.now()`). |
 | [16-webhooks-and-event-contracts.md](.agents/rules/16-webhooks-and-event-contracts.md) | `model_decision` | Constant-time `crypto.timingSafeEqual` HMAC-SHA256 on raw body; 5-minute replay guard; Transactional Inbox (`inbox_events` deduplication); CloudEvents 1.0 envelope. |
 | [17-feature-flags-and-progressive-delivery.md](.agents/rules/17-feature-flags-and-progressive-delivery.md) | `model_decision` | 4 Flag categories (Release $\le 14\text{d}$ TTL, Operational Kill-Switches, Experiment, Entitlement); SHA-256 Consistent Hashing rollouts; Dual-State (`ON`/`OFF`) testing. |
+| [18-multi-tenancy-and-background-jobs.md](.agents/rules/18-multi-tenancy-and-background-jobs.md) | `model_decision` | Multi-tenant isolation via PostgreSQL Row-Level Security (`ENABLE ROW LEVEL SECURITY`); resumable chunked batch/cron jobs ($200\text{–}1,000$ rows) with cursor checkpointing. |
 
 ---
 
@@ -41,6 +42,7 @@ Activate these step-by-step runbooks when performing core engineering workflows:
 - **`zero-downtime-migration`** ([SKILL.md](.agents/skills/zero-downtime-migration/SKILL.md)): Author and verify lock-free Expand-and-Contract database migrations.
 - **`adr-writer`** ([SKILL.md](.agents/skills/adr-writer/SKILL.md)): Generate Architecture Decision Records (`docs/adr/`).
 - **`incident-rca-postmortem`** ([SKILL.md](.agents/skills/incident-rca-postmortem/SKILL.md)): Conduct a blameless 5-Whys Root Cause Analysis and generate a Postmortem (`docs/postmortems/`).
+- **`legacy-strangler-refactoring`** ([SKILL.md](.agents/skills/legacy-strangler-refactoring/SKILL.md)): Safely modernize legacy codebases using Characterization (Golden Master) tests and the Strangler Fig pattern.
 
 ---
 
