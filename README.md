@@ -9,7 +9,7 @@ This repository provides a **production-grade, universal AI engineering framewor
 ```text
 .
 ├── .agents/
-│   ├── VERSION                          # Semantic Version Stamp (2.4.0) for Multi-Project Sync Tracking
+│   ├── VERSION                          # Semantic Version Stamp (2.5.0) for Multi-Project Sync Tracking
 │   ├── hooks.json                       # Native Antigravity Lifecycle Hooks (PreToolUse & PostToolUse)
 │   ├── project-context.example.md       # Project-Specific Override Template (Protected during Sync)
 │   ├── rules/                           # 18 Modular Engineering Standards (3-Tier Progressive Disclosure)
@@ -55,12 +55,14 @@ This repository provides a **production-grade, universal AI engineering framewor
 │   │       ├── harness-self-test.mjs    # Zero-Dependency Core Algorithm Self-Test Suite
 │   │       └── harness-verify.sh        # 1-Click 5-Gate Deterministic Verification Suite
 │   ├── scripts/
-│   │   └── sync-to-project.sh           # Multi-Project Rollout & Upgrade CLI for Engineering Managers
-│   └── templates/                       # 21 Production-Ready Boilerplates (100% Verified)
+│   │   ├── sync-to-project.sh           # Multi-Project Rollout & Upgrade CLI for Engineering Managers
+│   │   └── scaffold-new-service.sh      # 1-Click Clean Architecture Microservice Generator
+│   └── templates/                       # 22 Production-Ready Boilerplates (100% Verified)
 │       ├── harness/                     # Application Test Harness Templates
 │       │   ├── integration-harness.ts   # Docker Testcontainers (PostgreSQL 16 + Redis 7 Ephemeral Runner)
 │       │   ├── frontend-render-harness.tsx # RTL Custom Render + QueryClient + MemoryRouter Wrapper
-│       │   └── smoke-canary-harness.ts  # Zero-Dependency Synthetic Canary Probe (/livez, /readyz, OpenAPI, Latency)
+│       │   ├── smoke-canary-harness.ts  # Zero-Dependency Synthetic Canary Probe (/livez, /readyz, OpenAPI, Latency)
+│       │   └── k6-load-test.js          # Enterprise Performance Benchmark & Idempotency Concurrency Test
 │       ├── schema-baseline.sql          # Consolidated PostgreSQL 16 DDL with RLS, Outbox, DLQ & Ledger
 │       ├── dlq-worker-replay.ts         # Dead Letter Queue & Poison-Pill Quarantine with Exponential Backoff
 │       ├── stryker.config.json          # Mutation Testing Configuration (80% Mutation Score Quality Gate)
@@ -81,9 +83,14 @@ This repository provides a **production-grade, universal AI engineering framewor
 │       └── terraform-base.tf            # Encrypted Terraform S3 Remote State + DynamoDB State Locking
 ├── Makefile                             # POSIX Standard Command Runner (make verify, make up, make sync)
 ├── docker-compose.yml                   # Local Dev Stack: PostgreSQL 16 (auto-init), Redis 7, Jaeger OTel
-├── docs/                                # Visual Architecture & System Documentation
-│   └── architecture/
-│       └── system-overview.md           # C4 Architecture Diagrams as Code (Mermaid)
+├── docs/                                # Visual Architecture, ADRs & SRE Runbooks
+│   ├── architecture/
+│   │   └── system-overview.md           # C4 Architecture Diagrams as Code (Mermaid)
+│   ├── runbooks/
+│   │   └── incident-triage-runbook.md   # Systematic 6-Step Production Incident & SRE Triage SOP
+│   └── adr/                             # Architecture Decision Records (Michael Nygard format)
+│       ├── 0001-record-architecture-decisions.md
+│       └── 0002-modular-monolith-with-outbox-by-default.md
 ├── .claude/                             # Native Claude Code Configuration
 │   ├── settings.json                    # Native Claude Code PreToolUse & PostToolUse Hooks
 │   ├── agents/                          # 6 Native Claude Code Subagents (*.md)
@@ -141,8 +148,10 @@ Use the automated `sync-to-project.sh` CLI to install or upgrade this framework 
 #    /path/to/target-project/.agents/project-context.md
 
 # 3. Run the 5-Gate Verification Harness at any time (or via Makefile):
-make verify          # Runs 5-gate security, architecture, syntax, and self-test harness
-make self-test       # Runs zero-dependency runtime self-test
-make canary          # Runs synthetic smoke canary check against running instance
-make sync TARGET=..  # Rolls out framework into a target repository
+make verify                 # Runs 5-gate security, architecture, syntax, and self-test harness
+make self-test              # Runs zero-dependency runtime self-test
+make canary                 # Runs synthetic smoke canary check against running instance
+make up                     # Starts local PostgreSQL 16 (auto-init), Redis 7, and Jaeger OTel
+make new-service NAME=..    # Scaffolds a complete Clean Architecture microservice
+make sync TARGET=..         # Rolls out framework into a target repository
 ```

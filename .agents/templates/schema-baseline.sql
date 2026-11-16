@@ -185,3 +185,4 @@ CREATE POLICY tenant_isolation_audit ON audit_logs
   FOR ALL
   USING (tenant_id = NULLIF(current_setting('app.current_tenant_id', true), ''))
   WITH CHECK (tenant_id = NULLIF(current_setting('app.current_tenant_id', true), ''));
+

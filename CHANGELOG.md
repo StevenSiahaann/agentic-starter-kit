@@ -6,6 +6,16 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [2.5.0] - 2026-11-16
+
+### Added
+- **Production Incident Triage & SRE Runbook (`incident-triage-runbook.md`)**: Systematic 6-step triage protocol covering SEV-1 to SEV-3 classification, health probes, Jaeger distributed trace root span diagnosis, DLQ poison-pill quarantine inspection, circuit breaker state, database connection pool/lock saturation, and emergency feature flag kill-switches.
+- **K6 Performance Benchmark & Concurrency Load Test (`k6-load-test.js`)**: Production-grade load test validating Rule 11 SLOs ($p95 < 200\text{ms}$, error rate $<0.1\%$) and concurrent `Idempotency-Key` replay safety.
+- **Architecture Decision Record (ADR) Baseline**: Seeded `0001-record-architecture-decisions.md` and `0002-modular-monolith-with-outbox-by-default.md` establishing ADR governance and modular monolith criteria.
+- **Microservice Scaffolder CLI (`scaffold-new-service.sh`)**: 1-click generator (`make new-service NAME=..`) scaffolding Clean Architecture directory structure, strict `tsconfig.json`, sample entity with AAA tests, and automatic `.agents/` sync.
+
+---
+
 ## [2.4.0] - 2026-11-16
 
 ### Added

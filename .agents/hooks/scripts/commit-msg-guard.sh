@@ -53,3 +53,4 @@ if ! [[ "$FIRST_LINE" =~ $CONVENTIONAL_REGEX ]]; then
 fi
 
 exit 0
+

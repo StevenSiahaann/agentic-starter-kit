@@ -103,6 +103,18 @@ if [[ ! -f "$TARGET_DIR/docs/architecture/system-overview.md" ]]; then
     echo -e "${GREEN}  -> Installed C4 Architecture documentation.${NC}"
 fi
 
+mkdir -p "$TARGET_DIR/docs/runbooks"
+if [[ ! -f "$TARGET_DIR/docs/runbooks/incident-triage-runbook.md" ]]; then
+    cp "$SOURCE_ROOT/docs/runbooks/incident-triage-runbook.md" "$TARGET_DIR/docs/runbooks/incident-triage-runbook.md"
+    echo -e "${GREEN}  -> Installed SRE Incident Triage Runbook.${NC}"
+fi
+
+mkdir -p "$TARGET_DIR/docs/adr"
+if [[ -d "$SOURCE_ROOT/docs/adr" ]]; then
+    cp -n "$SOURCE_ROOT/docs/adr/"*.md "$TARGET_DIR/docs/adr/" 2>/dev/null || true
+    echo -e "${GREEN}  -> Initialized baseline Architecture Decision Records (ADRs).${NC}"
+fi
+
 if [[ ! -f "$TARGET_DIR/.github/CODEOWNERS" ]]; then
     cp "$SOURCE_ROOT/.github/CODEOWNERS" "$TARGET_DIR/.github/CODEOWNERS"
 fi

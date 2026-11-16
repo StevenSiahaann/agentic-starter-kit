@@ -1,10 +1,11 @@
 # ==============================================================================
 # Makefile - Universal Enterprise AI Engineering Framework Standard
 # ==============================================================================
-.PHONY: help verify self-test sync canary audit clean up down
+.PHONY: help verify self-test sync canary audit clean up down new-service
 
 SHELL := /bin/bash
 TARGET ?= ""
+NAME ?= ""
 
 # Default target: display help
 help:
@@ -15,6 +16,7 @@ help:
 	@echo "  make verify          Run the 5-gate architectural verification harness"
 	@echo "  make self-test       Execute runtime self-test of core framework algorithms"
 	@echo "  make sync TARGET=..  Rollout or upgrade framework into target repository"
+	@echo "  make new-service NAME=.. Scaffold a brand new Clean Architecture microservice"
 	@echo "  make canary          Run synthetic smoke canary health check"
 	@echo "  make audit           Execute secret scanner and dependency check"
 	@echo "  make up              Start local PostgreSQL, Redis, and Jaeger containers"
@@ -45,6 +47,14 @@ sync:
 		exit 1; \
 	fi
 	@./.agents/scripts/sync-to-project.sh "$(TARGET)"
+
+new-service:
+	@if [ -z "$(NAME)" ]; then \
+		echo "[ERROR] Service NAME is required. Example: make new-service NAME=order-service"; \
+		exit 1; \
+	fi
+	@./.agents/scripts/scaffold-new-service.sh "$(NAME)"
+
 
 canary:
 	@node -e 'import("./.agents/templates/harness/smoke-canary-harness.ts").catch(() => process.exit(0))' 2>/dev/null || echo "[INFO] Canary harness template ready for service configuration."

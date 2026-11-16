@@ -127,3 +127,4 @@ flowchart TD
     DLQTable --> SREAlert["Alert On-Call SRE (trace_id preserved)"]
     DLQTable --> ManualReplay["Idempotent Replay CLI (replayDlqBatch)"]
 ```
+
