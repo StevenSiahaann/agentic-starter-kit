@@ -106,3 +106,15 @@ All interfaces must be fully operable by assistive technologies and keyboard-onl
   // WRONG: Fragile implementation-detail selector
   const submitBtn = container.querySelector('.btn-primary-orange');
   ```
+
+---
+
+## 8. Frontend Security & Browser Hardening
+
+1. **Zero Tokens in `localStorage` or `sessionStorage`**:
+   - Never store JWT Access Tokens, Refresh Tokens, or sensitive session secrets in `localStorage` or `sessionStorage` (any XSS payload can exfiltrate `window.localStorage` in a single line).
+   - Store session tokens exclusively in **`HttpOnly; Secure; SameSite=Strict`** cookies (or keep short-lived access tokens strictly in JavaScript memory paired with an `HttpOnly` refresh cookie).
+2. **Open Redirect Prevention**:
+   - Validate all post-login redirect parameters (`?redirect=`, `?returnTo=`, `?callbackUrl=`) to allow only relative internal paths matching `/^\/[^\/\\]/`. Reject external URLs or protocol-relative `//evil.com` targets.
+3. **External Link Tab-Nabbing Defense**:
+   - Every external anchor tag opening in a new tab (`target="_blank"`) MUST include `rel="noopener noreferrer"`.

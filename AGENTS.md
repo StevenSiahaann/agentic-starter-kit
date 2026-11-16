@@ -27,6 +27,9 @@ If `.agents/project-context.md` exists in this repository, read it first. It def
 | [12-api-design-and-versioning.md](.agents/rules/12-api-design-and-versioning.md) | `glob` (API/DTO) | Contract-First OpenAPI 3.1 / Zod schemas; standard `{ data, meta }` & cursor pagination envelopes; `/api/v1/` URI versioning; RFC 8594 `Deprecation` & `Sunset` headers. |
 | [13-caching-and-rate-limiting.md](.agents/rules/13-caching-and-rate-limiting.md) | `glob` (Cache/DB) | Cache-Aside with **Jittered TTL** (anti-stampede); versioned cache keys; Optimistic (`version`) vs Pessimistic (`FOR UPDATE SKIP LOCKED`) locking; multi-tier `RateLimit-*` headers. |
 | [14-data-privacy-and-compliance.md](.agents/rules/14-data-privacy-and-compliance.md) | `model_decision` | 4-Tier Data Classification (`PUBLIC`, `INTERNAL`, `CONFIDENTIAL_PII`, `RESTRICTED_SECRET`); recursive PII log redaction; append-only `audit_logs` table; GDPR / UU PDP Crypto-Shredding. |
+| [15-financial-time-and-i18n.md](.agents/rules/15-financial-time-and-i18n.md) | `model_decision` | Integer minor units (`BIGINT`) / `NUMERIC(19,4)` for money (zero floats); Banker's Rounding; Double-Entry `ledger_entries`; `UTC` storage + Monotonic Clocks (`performance.now()`). |
+| [16-webhooks-and-event-contracts.md](.agents/rules/16-webhooks-and-event-contracts.md) | `model_decision` | Constant-time `crypto.timingSafeEqual` HMAC-SHA256 on raw body; 5-minute replay guard; Transactional Inbox (`inbox_events` deduplication); CloudEvents 1.0 envelope. |
+| [17-feature-flags-and-progressive-delivery.md](.agents/rules/17-feature-flags-and-progressive-delivery.md) | `model_decision` | 4 Flag categories (Release $\le 14\text{d}$ TTL, Operational Kill-Switches, Experiment, Entitlement); SHA-256 Consistent Hashing rollouts; Dual-State (`ON`/`OFF`) testing. |
 
 ---
 

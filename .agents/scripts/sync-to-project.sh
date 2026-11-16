@@ -78,6 +78,7 @@ cp -P -R "$SOURCE_ROOT/.claude/"* "$TARGET_DIR/.claude/"
 cp "$SOURCE_ROOT/.cursorrules" "$TARGET_DIR/.cursorrules"
 cp -R "$SOURCE_ROOT/.cursor/rules/"* "$TARGET_DIR/.cursor/rules/"
 cp "$SOURCE_ROOT/.windsurfrules" "$TARGET_DIR/.windsurfrules"
+cp "$SOURCE_ROOT/.editorconfig" "$TARGET_DIR/.editorconfig"
 cp "$SOURCE_ROOT/.github/PULL_REQUEST_TEMPLATE.md" "$TARGET_DIR/.github/PULL_REQUEST_TEMPLATE.md"
 cp "$SOURCE_ROOT/.github/copilot-instructions.md" "$TARGET_DIR/.github/copilot-instructions.md"
 

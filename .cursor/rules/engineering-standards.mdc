@@ -22,6 +22,9 @@ Read `AGENTS.md` for the full architectural index and consult the specific modul
 - **API Design, OpenAPI Contracts, & Versioning**: `.agents/rules/12-api-design-and-versioning.md`
 - **Caching (Jittered TTL), Concurrency Locks, & Rate Limiting**: `.agents/rules/13-caching-and-rate-limiting.md`
 - **Data Privacy, PII Redaction, & Immutable Audit Logs**: `.agents/rules/14-data-privacy-and-compliance.md`
+- **Financial Precision, Double-Entry Ledger, Time, & i18n**: `.agents/rules/15-financial-time-and-i18n.md`
+- **Webhook Security, Transactional Inbox, & CloudEvents 1.0**: `.agents/rules/16-webhooks-and-event-contracts.md`
+- **Feature Flags, Consistent Hashing Rollout, & Kill-Switches**: `.agents/rules/17-feature-flags-and-progressive-delivery.md`
 
 ## Production Templates (`.agents/templates/`)
-Instantiate features from `.agents/templates/` (`use-case-template.ts`, `idempotency-middleware.ts`, `circuit-breaker-client.ts`, `saga-coordinator.ts`, `outbox-worker.ts`, `graceful-shutdown.ts`, `otel-logger.ts`, `frontend-query-form.tsx`, `Dockerfile.distroless`, `terraform-base.tf`, and `harness/*`) and always verify changes with `./.agents/hooks/scripts/harness-verify.sh`.
+Instantiate features from `.agents/templates/` (`use-case-template.ts`, `idempotency-middleware.ts`, `circuit-breaker-client.ts`, `saga-coordinator.ts`, `outbox-worker.ts`, `webhook-verifier.ts`, `feature-flag-evaluator.ts`, `graceful-shutdown.ts`, `otel-logger.ts`, `frontend-query-form.tsx`, `Dockerfile.distroless`, `terraform-base.tf`, and `harness/*`) and always verify changes with `./.agents/hooks/scripts/harness-verify.sh`.

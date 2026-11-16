@@ -11,21 +11,24 @@ This repository provides a **production-grade, universal AI engineering framewor
 ├── .agents/
 │   ├── hooks.json                       # Native Antigravity Lifecycle Hooks (PreToolUse & PostToolUse)
 │   ├── project-context.example.md       # Project-Specific Override Template (Protected during Sync)
-│   ├── rules/                           # 14 Modular Engineering Standards (3-Tier Progressive Disclosure)
+│   ├── rules/                           # 17 Modular Engineering Standards (3-Tier Progressive Disclosure)
 │   │   ├── 01-security-and-owasp.md     # [glob: Code/SQL] OWASP Top 10 Web (A01-A10) & OWASP LLM (LLM01-LLM10)
 │   │   ├── 02-ui-ux-human-craft.md      # [glob: UI] Anti-Glassmorphism, Solid Surfaces, Tactile Physics
 │   │   ├── 03-architecture-and-code.md  # [glob: Backend] Clean Architecture, Use-Case Driven, Result<T, E>
-│   │   ├── 04-database-and-cqrs.md      # [glob: DB] CQRS 3NF vs Read Projections, UUIDv7, Optimistic Lock
+│   │   ├── 04-database-and-cqrs.md      # [glob: DB] CQRS 3NF vs Read Projections, UUIDv7, Pool & Timeouts
 │   │   ├── 05-observability-otel.md     # [glob: Code] AsyncLocalStorage Trace Correlation, OTel W3C, NDJSON
 │   │   ├── 06-testing-strategy.md       # [glob: Test] Testing Pyramid (70/20/10), AAA Pattern, Mock Boundaries
 │   │   ├── 07-git-branch-and-pr.md      # [model_decision] Trunk-Based Development, Branch Regex, PR Limits
 │   │   ├── 08-devops-and-iac.md         # [glob: Infra] Multi-Stage Distroless Docker, Non-Root, Terraform State
-│   │   ├── 09-frontend-engineering.md   # [glob: FE] State Triad (TanStack/URL/Zustand), RHF+Zod, Zero CLS
+│   │   ├── 09-frontend-engineering.md   # [glob: FE] State Triad, RHF+Zod, Zero CLS, Browser Security Hardening
 │   │   ├── 10-monolith-vs-microservices.md # [model_decision] ADR Matrix, Modular Monolith, Outbox, Saga
 │   │   ├── 11-computational-complexity-and-metrics.md # [glob: Code/SQL] Big-O O(1) Lookups, CWV/RED/USE/DORA SLOs
 │   │   ├── 12-api-design-and-versioning.md # [glob: API/DTO] Contract-First OpenAPI 3.1, Envelopes, /api/v1/
 │   │   ├── 13-caching-and-rate-limiting.md # [glob: Cache/DB] Jittered TTL Anti-Stampede, SKIP LOCKED, RateLimit
-│   │   └── 14-data-privacy-and-compliance.md # [model_decision] 4-Tier PII Classification, Redaction, audit_logs
+│   │   ├── 14-data-privacy-and-compliance.md # [model_decision] 4-Tier PII Classification, Redaction, audit_logs
+│   │   ├── 15-financial-time-and-i18n.md # [model_decision] Minor Units, Banker's Rounding, Double-Entry Ledger
+│   │   ├── 16-webhooks-and-event-contracts.md # [model_decision] HMAC timingSafeEqual, 5m Replay Guard, Inbox
+│   │   └── 17-feature-flags-and-progressive-delivery.md # [model_decision] SHA-256 Consistent Hashing & Kill-Switches
 │   ├── skills/                          # 6 Actionable Engineering Skills / Runbooks (On-Demand)
 │   │   ├── scaffold-vertical-slice/     # End-to-End Feature Slice Generator (Domain -> UseCase -> Port -> Test)
 │   │   ├── staff-pr-review/             # 6-Pillar Staff Engineer PR & Code Review Rubric
@@ -48,7 +51,7 @@ This repository provides a **production-grade, universal AI engineering framewor
 │   │       └── harness-verify.sh        # 1-Click 5-Gate Deterministic Verification Suite
 │   ├── scripts/
 │   │   └── sync-to-project.sh           # Multi-Project Rollout & Upgrade CLI for Engineering Managers
-│   └── templates/                       # 12 Production-Ready Boilerplates (100% Verified)
+│   └── templates/                       # 14 Production-Ready Boilerplates (100% Verified)
 │       ├── harness/                     # Application Test Harness Templates
 │       │   ├── integration-harness.ts   # Docker Testcontainers (PostgreSQL 16 + Redis 7 Ephemeral Runner)
 │       │   └── frontend-render-harness.tsx # RTL Custom Render + QueryClient + MemoryRouter Wrapper
@@ -57,6 +60,8 @@ This repository provides a **production-grade, universal AI engineering framewor
 │       ├── circuit-breaker-client.ts    # Rolling-Window Circuit Breaker + Half-Open Probe Gate + Full Jitter
 │       ├── saga-coordinator.ts          # Distributed Saga Orchestrator + LIFO Rollback + DLQ + OTel Log
 │       ├── outbox-worker.ts             # Multi-Pod Safe Outbox Worker (FOR UPDATE SKIP LOCKED) + traceparent
+│       ├── webhook-verifier.ts          # Constant-Time HMAC-SHA256 Verifier + 5m Replay Guard + Inbox Port
+│       ├── feature-flag-evaluator.ts    # SHA-256 Consistent Hashing Rollout & Operational Kill-Switch Evaluator
 │       ├── graceful-shutdown.ts         # Kubernetes /livez & /readyz Probes + SIGTERM Connection Draining
 │       ├── frontend-query-form.tsx      # TanStack Query + RHF + Zod + Accessible Tactile Form
 │       ├── otel-logger.ts               # Structured NDJSON Logger + AsyncLocalStorage + Recursive PII Scrubber

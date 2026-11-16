@@ -110,3 +110,19 @@ CREATE TABLE outbox_events (
 
 CREATE INDEX idx_outbox_unpublished ON outbox_events(created_at) WHERE published_at IS NULL;
 ```
+
+---
+
+## 5. Connection Pool Sizing & Mandatory Query Timeouts
+
+Unbounded query durations and oversized per-pod connection pools are the #1 cause of PostgreSQL production outages during Kubernetes auto-scaling.
+
+### A. Connection Pool Sizing Formula
+When scaling application pods horizontally, size each pod's connection pool so total connections never exceed PostgreSQL `max_connections` (or route through **PgBouncer** in transaction pooling mode):
+$$\text{Max Pool Size per Pod} = \left\lfloor \frac{\text{DB Max Connections} - \text{Reserved Superuser/Admin Connections}}{\text{Max Auto-Scaling Pod Replicas}} \right\rfloor$$
+
+### B. Mandatory Session & Statement Timeouts
+Every database client pool MUST configure hard defensive timeouts at connection initialization so runaway queries or crashed workers never hold table locks indefinitely:
+- `statement_timeout = '5000ms'` (Aborts any single query running longer than 5 seconds on OLTP endpoints).
+- `lock_timeout = '2000ms'` (Fails fast if waiting $> 2\text{s}$ to acquire a row/table lock instead of queueing all worker threads).
+- `idle_in_transaction_session_timeout = '10000ms'` (Automatically rolls back and terminates zombie transactions left idle for $> 10\text{s}$).
