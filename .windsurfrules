@@ -1,0 +1,14 @@
+# Windsurf Cascade Engineering Rules
+
+This repository follows the enterprise standards defined in `.agents/rules/`.
+
+## Mandatory Architecture & Coding Rules
+1. Security: Zero hardcoded secrets. OWASP Web Top 10 + OWASP LLM Top 10 compliance. Refer to `.agents/rules/01-security-and-owasp.md`.
+2. Architecture: Organize code by Use-Cases (Command/Query). Use rich domain models and the Result<T, E> pattern. Refer to `.agents/rules/03-architecture-and-code.md` and `.agents/templates/use-case-template.ts`.
+3. Database & CQRS: 3NF Command models, denormalized Read queries, UUIDv7 primary keys, and Idempotency Keys on mutations. Refer to `.agents/rules/04-database-and-cqrs.md`.
+4. Resiliency & Events: Transactional Outbox Pattern for domain events, Saga Orchestrator for distributed rollbacks, and Circuit Breaker with jitter for remote calls. Refer to `.agents/rules/10-monolith-vs-microservices.md`.
+5. Observability: Single-line NDJSON logs correlated with W3C trace_id via AsyncLocalStorage. Refer to `.agents/rules/05-observability-otel.md`.
+6. Frontend: Separate Server State (TanStack Query), Client State (Zustand), and URL State (nuqs). Form validation with RHF + Zod. Zero layout shift via skeletons. Refer to `.agents/rules/09-frontend-engineering.md`.
+7. Complexity: Enforce O(1) Map/Set in-memory lookups and streaming for large payloads. Refer to `.agents/rules/11-computational-complexity-and-metrics.md`.
+8. Testing: Strict Arrange-Act-Assert (AAA) pattern. Pyramid 70% Unit / 20% Integration / 10% E2E. Refer to `.agents/rules/06-testing-strategy.md`.
+

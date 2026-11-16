@@ -1,0 +1,48 @@
+# Cursor AI Rules - Production Engineering Standards
+
+You are operating inside an enterprise-grade repository adhering to the standards defined in `.agents/rules/`.
+
+## Mandatory Guidelines
+1. Security First (.agents/rules/01-security-and-owasp.md):
+   - Never output hardcoded API keys, tokens, or credentials.
+   - Validate all inputs using Zod/Valibot schemas at system boundaries.
+   - Guard against OWASP Web Top 10 (A01-A10) and OWASP LLM (LLM01-LLM10).
+
+2. Clean Architecture & Domain Design (.agents/rules/03-architecture-and-code.md):
+   - Favor Use-Case / Command-Query handlers over monolithic "God Services".
+   - Use Result<T, E> pattern for domain failure paths; do not throw naked exceptions.
+   - Refer to template: `.agents/templates/use-case-template.ts`.
+
+3. Database, CQRS & Idempotency (.agents/rules/04-database-and-cqrs.md):
+   - 3NF Normalized schema for Write operations, denormalized projections for Read queries.
+   - Primary keys must be UUIDv7. Always include audit columns (created_at, updated_at, version).
+   - Use Idempotency-Key headers with DB locks for mutating operations (.agents/templates/idempotency-middleware.ts).
+
+4. Distributed Architecture (.agents/rules/10-monolith-vs-microservices.md):
+   - Default to Modular Monolith with bounded contexts; split only when justified.
+   - Use Transactional Outbox Pattern for domain events (.agents/templates/outbox-worker.ts).
+   - Use Saga Orchestrator with compensating rollbacks (.agents/templates/saga-coordinator.ts).
+   - Implement Circuit Breaker with exponential backoff & jitter (.agents/templates/circuit-breaker-client.ts).
+
+5. Observability (.agents/rules/05-observability-otel.md):
+   - Include trace_id, span_id, and timestamp in structured single-line NDJSON logs (.agents/templates/otel-logger.ts).
+   - Propagate W3C traceparent headers across external HTTP/gRPC boundaries.
+
+6. Frontend Craft (.agents/rules/02-ui-ux-human-craft.md & 09-frontend-engineering.md):
+   - State separation: Server state (TanStack Query) vs Client state (Zustand) vs URL state (nuqs).
+   - Solid tactile surfaces, no transparent blurry glassmorphism without backdrop fallbacks.
+   - Prevent Cumulative Layout Shift (CLS) with exact-geometry skeleton placeholders.
+   - Refer to template: `.agents/templates/frontend-query-form.tsx`.
+
+7. Big-O & Complexity (.agents/rules/11-computational-complexity-and-metrics.md):
+   - Amortized O(1) in-memory lookups using Map/Set instead of O(N^2) loops.
+   - Stream large files/datasets to keep memory footprint O(1).
+
+8. Testing (.agents/rules/06-testing-strategy.md):
+   - Arrange-Act-Assert (AAA) pattern for all test suites.
+   - Mock only external protocol boundaries; never mock domain entities or business invariants.
+   - Use Testcontainers via `.agents/templates/harness/integration-harness.ts` for integration tests.
+
+9. Verification Gate:
+   - Always run `./.agents/hooks/scripts/harness-verify.sh` to ensure all architectural invariants and security gates pass before finishing.
+

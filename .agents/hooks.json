@@ -1,0 +1,33 @@
+{
+  "security-pre-command-guard": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'if [ -x ./hooks/scripts/pre-command-guard.sh ]; then ./hooks/scripts/pre-command-guard.sh; elif [ -x ./.agents/hooks/scripts/pre-command-guard.sh ]; then ./.agents/hooks/scripts/pre-command-guard.sh; else ./scripts/pre-command-guard.sh; fi'",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  },
+  "quality-post-edit-styler": {
+    "enabled": true,
+    "PostToolUse": [
+      {
+        "matcher": "edit_file|write_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'if [ -x ./hooks/scripts/post-edit-styler.sh ]; then ./hooks/scripts/post-edit-styler.sh; elif [ -x ./.agents/hooks/scripts/post-edit-styler.sh ]; then ./.agents/hooks/scripts/post-edit-styler.sh; else ./scripts/post-edit-styler.sh; fi'",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}
+
