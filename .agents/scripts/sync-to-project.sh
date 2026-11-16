@@ -50,7 +50,7 @@ mkdir -p "$TARGET_DIR/.cursor/rules"
 mkdir -p "$TARGET_DIR/.github/workflows"
 
 # 2. Synchronize Rules, Agents, Skills, Hooks, Templates, and Scripts
-echo -e "${YELLOW}[1/5] Synchronizing .agents/ (rules, agents, skills, hooks, templates)...${NC}"
+echo -e "${YELLOW}[1/5] Synchronizing .agents/ (14 rules, 6 agents, 6 skills, hooks, 12 templates)...${NC}"
 cp -R "$SOURCE_ROOT/.agents/rules" "$TARGET_DIR/.agents/"
 cp -R "$SOURCE_ROOT/.agents/agents" "$TARGET_DIR/.agents/"
 cp -R "$SOURCE_ROOT/.agents/skills" "$TARGET_DIR/.agents/"
@@ -70,16 +70,24 @@ else
     echo -e "${GREEN}  -> Preserved existing .agents/project-context.md (not overwritten).${NC}"
 fi
 
-# 4. Synchronize Universal Multi-Agent Adapters
-echo -e "${YELLOW}[3/5] Synchronizing Universal Multi-Agent Adapters...${NC}"
+# 4. Synchronize Universal Multi-Agent Adapters & GitHub Governance
+echo -e "${YELLOW}[3/5] Synchronizing Universal Multi-Agent Adapters & Governance...${NC}"
 cp "$SOURCE_ROOT/AGENTS.md" "$TARGET_DIR/AGENTS.md"
 cp "$SOURCE_ROOT/CLAUDE.md" "$TARGET_DIR/CLAUDE.md"
-cp -R "$SOURCE_ROOT/.claude/"* "$TARGET_DIR/.claude/"
+cp -P -R "$SOURCE_ROOT/.claude/"* "$TARGET_DIR/.claude/"
 cp "$SOURCE_ROOT/.cursorrules" "$TARGET_DIR/.cursorrules"
 cp -R "$SOURCE_ROOT/.cursor/rules/"* "$TARGET_DIR/.cursor/rules/"
 cp "$SOURCE_ROOT/.windsurfrules" "$TARGET_DIR/.windsurfrules"
 cp "$SOURCE_ROOT/.github/PULL_REQUEST_TEMPLATE.md" "$TARGET_DIR/.github/PULL_REQUEST_TEMPLATE.md"
 cp "$SOURCE_ROOT/.github/copilot-instructions.md" "$TARGET_DIR/.github/copilot-instructions.md"
+
+if [[ ! -f "$TARGET_DIR/.github/CODEOWNERS" ]]; then
+    cp "$SOURCE_ROOT/.github/CODEOWNERS" "$TARGET_DIR/.github/CODEOWNERS"
+fi
+
+if [[ ! -f "$TARGET_DIR/.github/dependabot.yml" ]]; then
+    cp "$SOURCE_ROOT/.github/dependabot.yml" "$TARGET_DIR/.github/dependabot.yml"
+fi
 
 if [[ ! -f "$TARGET_DIR/.github/workflows/ci-cd-pipeline.yml" ]]; then
     cp "$SOURCE_ROOT/.github/workflows/ci-cd-pipeline.yml" "$TARGET_DIR/.github/workflows/ci-cd-pipeline.yml"

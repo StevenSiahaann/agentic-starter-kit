@@ -1,14 +1,11 @@
 # Windsurf Cascade Engineering Rules
 
-This repository follows the enterprise standards defined in `.agents/rules/`.
+This repository is governed by `AGENTS.md` and `.agents/rules/` (`01` through `14`).
 
-## Mandatory Architecture & Coding Rules
-1. Security: Zero hardcoded secrets. OWASP Web Top 10 + OWASP LLM Top 10 compliance. Refer to `.agents/rules/01-security-and-owasp.md`.
-2. Architecture: Organize code by Use-Cases (Command/Query). Use rich domain models and the Result<T, E> pattern. Refer to `.agents/rules/03-architecture-and-code.md` and `.agents/templates/use-case-template.ts`.
-3. Database & CQRS: 3NF Command models, denormalized Read queries, UUIDv7 primary keys, and Idempotency Keys on mutations. Refer to `.agents/rules/04-database-and-cqrs.md`.
-4. Resiliency & Events: Transactional Outbox Pattern for domain events, Saga Orchestrator for distributed rollbacks, and Circuit Breaker with jitter for remote calls. Refer to `.agents/rules/10-monolith-vs-microservices.md`.
-5. Observability: Single-line NDJSON logs correlated with W3C trace_id via AsyncLocalStorage. Refer to `.agents/rules/05-observability-otel.md`.
-6. Frontend: Separate Server State (TanStack Query), Client State (Zustand), and URL State (nuqs). Form validation with RHF + Zod. Zero layout shift via skeletons. Refer to `.agents/rules/09-frontend-engineering.md`.
-7. Complexity: Enforce O(1) Map/Set in-memory lookups and streaming for large payloads. Refer to `.agents/rules/11-computational-complexity-and-metrics.md`.
-8. Testing: Strict Arrange-Act-Assert (AAA) pattern. Pyramid 70% Unit / 20% Integration / 10% E2E. Refer to `.agents/rules/06-testing-strategy.md`.
-
+## Mandatory Engineering Standards
+1. **Security & Privacy**: Zero hardcoded secrets; OWASP Web Top 10 + LLM Top 10 compliance; recursive PII redaction in logs (`01-security-and-owasp.md`, `14-data-privacy-and-compliance.md`).
+2. **Clean Architecture & API Contracts**: Single-responsibility Command/Query Use-Case Handlers, Rich Domain Entities, `Result<T, E>` error handling, `/api/v1/` versioning, and RFC 7807 Problem Details (`03-architecture-and-code.md`, `12-api-design-and-versioning.md`).
+3. **Database, CQRS, & Caching**: 3NF Command models, denormalized Read projections, RFC 9562 UUIDv7 keys, `version` optimistic locking, scoped `Idempotency-Key` middleware, Jittered TTL caching, and `FOR UPDATE SKIP LOCKED` worker claims (`04-database-and-cqrs.md`, `13-caching-and-rate-limiting.md`).
+4. **Resiliency & Observability**: Transactional Outbox, LIFO Saga Orchestrator, Rolling-Window Circuit Breaker with Full Jitter, Graceful `SIGTERM` Shutdown (`/livez`, `/readyz`), and single-line NDJSON logs correlated with W3C `trace_id` via `AsyncLocalStorage` (`05-observability-otel.md`, `08-devops-and-iac.md`, `10-monolith-vs-microservices.md`).
+5. **Frontend & Complexity**: Solid tactile surfaces (no `backdrop-blur`), State Triad (TanStack Query, `nuqs`, Zustand), RHF + Zod, structural skeletons ($\text{CLS} < 0.1$), $O(1)$ `Map`/`Set` lookups in loops, and explicit Arrange-Act-Assert (AAA) tests (`02-ui-ux-human-craft.md`, `06-testing-strategy.md`, `09-frontend-engineering.md`, `11-computational-complexity-and-metrics.md`).
+6. **Verification Gate**: Always run `./.agents/hooks/scripts/harness-verify.sh` before completing any task.

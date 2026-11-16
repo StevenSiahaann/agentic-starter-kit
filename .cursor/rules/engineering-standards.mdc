@@ -1,34 +1,27 @@
 ---
-description: Production-grade engineering standards, Clean Architecture, CQRS, OWASP, and Resiliency rules
+description: Production-grade engineering standards, Clean Architecture, CQRS, OWASP, API Versioning, Caching, Privacy, and Resiliency rules
 globs: **/*
 alwaysApply: true
 ---
 
 # Enterprise Engineering Standards (.agents Framework)
 
-You are operating inside a codebase guided by the `.agents/` framework. All code generations, refactorings, and reviews MUST comply with the following modular rules located in `.agents/rules/`:
+Read `AGENTS.md` for the full architectural index and consult the specific modular standard in `.agents/rules/` matching your active task:
 
-- **Security (OWASP A01-A10, LLM01-LLM10)**: `.agents/rules/01-security-and-owasp.md`
-- **UI/UX & Human Craft**: `.agents/rules/02-ui-ux-human-craft.md`
+- **Security (OWASP A01–A10, LLM01–LLM10)**: `.agents/rules/01-security-and-owasp.md`
+- **UI/UX & Tactile Human Craft**: `.agents/rules/02-ui-ux-human-craft.md`
 - **Clean Architecture & Result Pattern**: `.agents/rules/03-architecture-and-code.md`
-- **Database, CQRS & Idempotency Key**: `.agents/rules/04-database-and-cqrs.md`
-- **Observability (OTel, AsyncLocalStorage Trace Correlation)**: `.agents/rules/05-observability-otel.md`
+- **Database, CQRS, UUIDv7 & Optimistic Lock**: `.agents/rules/04-database-and-cqrs.md`
+- **Observability (OTel, AsyncLocalStorage, PII Redaction)**: `.agents/rules/05-observability-otel.md`
 - **Testing Strategy (70/20/10 & AAA Pattern)**: `.agents/rules/06-testing-strategy.md`
 - **Git & PR Governance (Trunk-Based, Conventional Commits)**: `.agents/rules/07-git-branch-and-pr.md`
-- **DevOps & IaC (Distroless, Non-Root, Terraform State)**: `.agents/rules/08-devops-and-iac.md`
-- **Frontend Engineering (State Triad, RHF+Zod, Skeleton CLS)**: `.agents/rules/09-frontend-engineering.md`
+- **DevOps & IaC (Distroless, Graceful Shutdown, Terraform)**: `.agents/rules/08-devops-and-iac.md`
+- **Frontend Engineering (State Triad, RHF+Zod, Zero CLS)**: `.agents/rules/09-frontend-engineering.md`
 - **Monolith vs Microservices (ADR, Outbox, Saga, Circuit Breaker)**: `.agents/rules/10-monolith-vs-microservices.md`
-- **Computational Complexity & Metrics (Big-O, CWV, RED, USE)**: `.agents/rules/11-computational-complexity-and-metrics.md`
+- **Computational Complexity & SLO Metrics (Big-O, CWV, RED, USE, DORA)**: `.agents/rules/11-computational-complexity-and-metrics.md`
+- **API Design, OpenAPI Contracts, & Versioning**: `.agents/rules/12-api-design-and-versioning.md`
+- **Caching (Jittered TTL), Concurrency Locks, & Rate Limiting**: `.agents/rules/13-caching-and-rate-limiting.md`
+- **Data Privacy, PII Redaction, & Immutable Audit Logs**: `.agents/rules/14-data-privacy-and-compliance.md`
 
-## Ready-to-Use Templates
-Whenever implementing features, instantiate from the templates in `.agents/templates/`:
-- Use-Case: `use-case-template.ts`
-- Idempotency Middleware: `idempotency-middleware.ts`
-- Resilient Circuit Breaker: `circuit-breaker-client.ts`
-- Saga Coordinator: `saga-coordinator.ts`
-- Transactional Outbox Worker: `outbox-worker.ts`
-- Frontend Query Form: `frontend-query-form.tsx`
-- Structured Logger: `otel-logger.ts`
-- Distroless Dockerfile: `Dockerfile.distroless`
-- Terraform State Locking: `terraform-base.tf`
-
+## Production Templates (`.agents/templates/`)
+Instantiate features from `.agents/templates/` (`use-case-template.ts`, `idempotency-middleware.ts`, `circuit-breaker-client.ts`, `saga-coordinator.ts`, `outbox-worker.ts`, `graceful-shutdown.ts`, `otel-logger.ts`, `frontend-query-form.tsx`, `Dockerfile.distroless`, `terraform-base.tf`, and `harness/*`) and always verify changes with `./.agents/hooks/scripts/harness-verify.sh`.

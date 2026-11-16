@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: glob
+globs: "**/*.ts, **/*.js, **/*.go, **/*.py"
 ---
 
 # Architecture & Backend Code Standards: Clean Use-Case Driven & Error Taxonomy

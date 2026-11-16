@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: model_decision
+description: Architecture Decision Record (ADR) matrix for Modular Monolith vs Microservices, Transactional Outbox, Saga Orchestrator, and Circuit Breaker patterns. Activate when designing system architecture, evaluating service boundaries, or implementing distributed workflows.
 ---
 
 # Architecture Standards: Monolith vs. Microservices Decision Matrix & Distributed Patterns

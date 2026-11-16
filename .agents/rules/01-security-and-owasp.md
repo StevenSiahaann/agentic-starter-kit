@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: glob
+globs: "**/*.ts, **/*.tsx, **/*.js, **/*.jsx, **/*.go, **/*.py, **/*.sql"
 ---
 
 # Security Standard: OWASP Top 10 Web & OWASP Top 10 for LLM

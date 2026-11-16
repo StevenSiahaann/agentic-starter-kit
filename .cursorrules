@@ -1,48 +1,24 @@
-# Cursor AI Rules - Production Engineering Standards
+# Cursor AI Rules — Enterprise Production Engineering Standards
 
-You are operating inside an enterprise-grade repository adhering to the standards defined in `.agents/rules/`.
+You are operating inside a codebase governed by `AGENTS.md` and `.agents/rules/` (`01` through `14`).
 
-## Mandatory Guidelines
-1. Security First (.agents/rules/01-security-and-owasp.md):
-   - Never output hardcoded API keys, tokens, or credentials.
-   - Validate all inputs using Zod/Valibot schemas at system boundaries.
-   - Guard against OWASP Web Top 10 (A01-A10) and OWASP LLM (LLM01-LLM10).
-
-2. Clean Architecture & Domain Design (.agents/rules/03-architecture-and-code.md):
-   - Favor Use-Case / Command-Query handlers over monolithic "God Services".
-   - Use Result<T, E> pattern for domain failure paths; do not throw naked exceptions.
-   - Refer to template: `.agents/templates/use-case-template.ts`.
-
-3. Database, CQRS & Idempotency (.agents/rules/04-database-and-cqrs.md):
-   - 3NF Normalized schema for Write operations, denormalized projections for Read queries.
-   - Primary keys must be UUIDv7. Always include audit columns (created_at, updated_at, version).
-   - Use Idempotency-Key headers with DB locks for mutating operations (.agents/templates/idempotency-middleware.ts).
-
-4. Distributed Architecture (.agents/rules/10-monolith-vs-microservices.md):
-   - Default to Modular Monolith with bounded contexts; split only when justified.
-   - Use Transactional Outbox Pattern for domain events (.agents/templates/outbox-worker.ts).
-   - Use Saga Orchestrator with compensating rollbacks (.agents/templates/saga-coordinator.ts).
-   - Implement Circuit Breaker with exponential backoff & jitter (.agents/templates/circuit-breaker-client.ts).
-
-5. Observability (.agents/rules/05-observability-otel.md):
-   - Include trace_id, span_id, and timestamp in structured single-line NDJSON logs (.agents/templates/otel-logger.ts).
-   - Propagate W3C traceparent headers across external HTTP/gRPC boundaries.
-
-6. Frontend Craft (.agents/rules/02-ui-ux-human-craft.md & 09-frontend-engineering.md):
-   - State separation: Server state (TanStack Query) vs Client state (Zustand) vs URL state (nuqs).
-   - Solid tactile surfaces, no transparent blurry glassmorphism without backdrop fallbacks.
-   - Prevent Cumulative Layout Shift (CLS) with exact-geometry skeleton placeholders.
-   - Refer to template: `.agents/templates/frontend-query-form.tsx`.
-
-7. Big-O & Complexity (.agents/rules/11-computational-complexity-and-metrics.md):
-   - Amortized O(1) in-memory lookups using Map/Set instead of O(N^2) loops.
-   - Stream large files/datasets to keep memory footprint O(1).
-
-8. Testing (.agents/rules/06-testing-strategy.md):
-   - Arrange-Act-Assert (AAA) pattern for all test suites.
-   - Mock only external protocol boundaries; never mock domain entities or business invariants.
-   - Use Testcontainers via `.agents/templates/harness/integration-harness.ts` for integration tests.
-
-9. Verification Gate:
-   - Always run `./.agents/hooks/scripts/harness-verify.sh` to ensure all architectural invariants and security gates pass before finishing.
-
+## Core Mandates
+1. **Security & Privacy (`01-security-and-owasp.md`, `14-data-privacy-and-compliance.md`)**:
+   - Zero hardcoded secrets; never read/write live `.env` files.
+   - Enforce domain-layer ownership checks (anti-IDOR), 100% parameterized queries, Zod boundary validation, SSRF private IP blocks, and recursive PII log redaction.
+2. **Clean Architecture & API Design (`03-architecture-and-code.md`, `12-api-design-and-versioning.md`)**:
+   - Use single-responsibility Command/Query Use-Case Handlers and Rich Domain Entities (no God Services).
+   - Return `Result<T, DomainError>` for domain errors (4xx); return masked 500 RFC 7807 Problem Details with `trace_id` for system errors.
+   - Follow `/api/v1/` versioning and `{ data, meta }` cursor pagination envelopes.
+3. **Database, CQRS, & Caching (`04-database-and-cqrs.md`, `13-caching-and-rate-limiting.md`)**:
+   - 3NF Command models with RFC 9562 UUIDv7 keys and `version` optimistic locking; denormalized Read projections.
+   - Require scoped `Idempotency-Key` headers on mutations; use Jittered TTLs on Redis caches and `FOR UPDATE SKIP LOCKED` on queue/outbox workers.
+4. **Resiliency & Observability (`05-observability-otel.md`, `08-devops-and-iac.md`, `10-monolith-vs-microservices.md`)**:
+   - Default to Modular Monolith; use Transactional Outbox, LIFO Saga Orchestrator, and Rolling-Window Circuit Breaker with Full Jitter.
+   - Emit single-line NDJSON logs with `AsyncLocalStorage` W3C `trace_id` correlation (`.agents/templates/otel-logger.ts`). Zero raw `console.log`.
+5. **Frontend & Tactile UI (`02-ui-ux-human-craft.md`, `09-frontend-engineering.md`)**:
+   - Anti-Glassmorphism (no `backdrop-blur`); 100% opaque solid surfaces, WCAG AA contrast $\ge 4.5:1$, tactile press physics.
+   - State Triad: TanStack Query (server), `nuqs` (URL), Zustand (UI); RHF + Zod; structural skeletons ($\text{CLS} < 0.1$).
+6. **Complexity & Testing (`06-testing-strategy.md`, `11-computational-complexity-and-metrics.md`)**:
+   - Enforce $O(1)$ `Map`/`Set` lookups in loops and $O(1)$ memory streaming for files $>10\text{MB}$.
+   - Write tests in explicit Arrange-Act-Assert (AAA) blocks; never mock domain entities or ORM drivers; run `./.agents/hooks/scripts/harness-verify.sh` before finishing.

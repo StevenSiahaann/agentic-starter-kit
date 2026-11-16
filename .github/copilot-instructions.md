@@ -1,14 +1,10 @@
 # GitHub Copilot Instructions
 
-Whenever assisting with code generation, code review, or refactoring in this repository, you must adhere to the production engineering guidelines specified in `.agents/rules/`:
+Whenever generating code, refactoring, or reviewing Pull Requests in this repository, enforce the production engineering standards defined in `AGENTS.md` and `.agents/rules/`:
 
 ## Engineering Standards Checklist
-- [ ] **Security**: Input validation using Zod/Pydantic schemas; zero secrets committed; parameterized queries; HTML output sanitization (`.agents/rules/01-security-and-owasp.md`).
-- [ ] **Clean Architecture**: Command/Query Use-Case handlers; Rich Domain Entities; `Result<T, E>` error handling; no God Services (`.agents/rules/03-architecture-and-code.md`).
-- [ ] **Data Model & CQRS**: UUIDv7 keys; audit columns (`created_at`, `updated_at`, `version`); `Idempotency-Key` header with distributed lock for mutating endpoints (`.agents/rules/04-database-and-cqrs.md`).
-- [ ] **Distributed Resiliency**: Transactional Outbox Pattern for events; Saga Orchestrator for rollbacks; Circuit Breaker with exponential backoff & jitter (`.agents/rules/10-monolith-vs-microservices.md`).
-- [ ] **Observability**: Distributed trace correlation (`trace_id`, `span_id`) on all structured logs via `AsyncLocalStorage` (`.agents/rules/05-observability-otel.md`).
-- [ ] **Testing**: Strict Arrange-Act-Assert (AAA) pattern; mock protocol boundaries only, never domain models (`.agents/rules/06-testing-strategy.md`).
-- [ ] **Frontend**: TanStack Query (server state), Zustand (client UI state), `nuqs` (URL state); RHF + Zod; skeleton placeholders to prevent CLS (`.agents/rules/09-frontend-engineering.md`).
-- [ ] **Performance**: Prefer `Map`/`Set` for $O(1)$ lookups; stream data with $O(1)$ space complexity (`.agents/rules/11-computational-complexity-and-metrics.md`).
-
+- [ ] **Security & Privacy**: Validate external inputs with Zod; use 100% parameterized queries; enforce domain-layer ownership checks (anti-IDOR); redact PII/secrets in logs (`01-security-and-owasp.md`, `14-data-privacy-and-compliance.md`).
+- [ ] **Clean Architecture & API Versioning**: Use single-responsibility Command/Query Handlers, Rich Domain Entities, `Result<T, E>` for domain errors (4xx), masked RFC 7807 Problem Details for 500 errors, and `/api/v1/` cursor-paginated envelopes (`03-architecture-and-code.md`, `12-api-design-and-versioning.md`).
+- [ ] **Data Model, Caching, & Concurrency**: Use RFC 9562 UUIDv7 keys, `version` optimistic locking, Foreign Key B-Tree indexes, scoped `Idempotency-Key` middleware, Jittered Cache TTLs, and `FOR UPDATE SKIP LOCKED` for outbox/queue polling (`04-database-and-cqrs.md`, `13-caching-and-rate-limiting.md`).
+- [ ] **Distributed Resiliency & Observability**: Use Transactional Outbox, LIFO Saga Orchestrator, Circuit Breaker with Full Jitter, Graceful `SIGTERM` Shutdown (`/livez`, `/readyz`), and `AsyncLocalStorage` W3C `trace_id` NDJSON logging (`05-observability-otel.md`, `08-devops-and-iac.md`, `10-monolith-vs-microservices.md`).
+- [ ] **Frontend, Complexity, & Testing**: Enforce Anti-Glassmorphism (solid tactile surfaces), State Triad (TanStack Query / `nuqs` / Zustand), RHF + Zod, structural skeletons ($\text{CLS} < 0.1$), $O(1)$ `Map`/`Set` lookups in loops, and Arrange-Act-Assert (AAA) tests (`02-ui-ux-human-craft.md`, `06-testing-strategy.md`, `09-frontend-engineering.md`, `11-computational-complexity-and-metrics.md`).

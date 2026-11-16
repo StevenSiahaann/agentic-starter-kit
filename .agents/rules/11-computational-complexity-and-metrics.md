@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: glob
+globs: "**/*.ts, **/*.tsx, **/*.js, **/*.jsx, **/*.go, **/*.py, **/*.sql"
 ---
 
 # Computational Complexity (Big-O) & Production Metrics Standards

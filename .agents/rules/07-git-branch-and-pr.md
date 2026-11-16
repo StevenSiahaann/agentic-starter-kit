@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: model_decision
+description: Git branching strategy (Trunk-Based Development), branch naming regex, Conventional Commits specification, and Pull Request governance. Activate when creating branches, committing changes, or opening/reviewing Pull Requests.
 ---
 
 # Git Workflow Standard: Branching Strategy, Conventional Commits, & PR Governance

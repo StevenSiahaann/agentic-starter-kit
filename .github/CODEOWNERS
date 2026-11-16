@@ -1,0 +1,24 @@
+# ==============================================================================
+# ENTERPRISE CODEOWNERS GOVERNANCE
+# ==============================================================================
+# Enforces mandatory peer review from Principal Architects / Engineering Managers
+# as required by .agents/rules/07-git-branch-and-pr.md
+# ==============================================================================
+
+# Default global owners for the repository
+*                                      @StevenSiahaann
+
+# AI Engineering Standards, Safety Harness, & Governance
+/.agents/                              @StevenSiahaann
+/.claude/                              @StevenSiahaann
+/.cursor/                              @StevenSiahaann
+/.github/                              @StevenSiahaann
+/AGENTS.md                             @StevenSiahaann
+/CLAUDE.md                             @StevenSiahaann
+
+# Security-Critical & Infrastructure Paths
+**/Dockerfile*                         @StevenSiahaann
+**/*.tf                                @StevenSiahaann
+**/migrations/**                       @StevenSiahaann
+**/prisma/**                           @StevenSiahaann
+

@@ -1,6 +1,7 @@
 /**
- * Transactional Outbox Pattern Worker Template
- * Implements: Dual-Write prevention, At-Least-Once Delivery guarantee to Kafka/RabbitMQ,
+ * Transactional Outbox Pattern Worker Template (Multi-Pod Concurrency Safe)
+ * Implements: Dual-Write prevention, At-Least-Once Delivery to Kafka/RabbitMQ,
+ * Multi-Replica safe polling via PostgreSQL 'FOR UPDATE SKIP LOCKED',
  * W3C traceparent header propagation, and Structured OTel Logging.
  */
 
@@ -20,6 +21,22 @@ export interface OutboxMessage {
 export interface MessagePublisher {
   publish(topic: string, key: string, payload: unknown, headers: Record<string, string>): Promise<void>;
 }
+
+/**
+ * OutboxRepository contract.
+ * IMPORTANT (Multi-Pod Concurrency):
+ * When running multiple container replicas in Kubernetes, `claimAndPublishBatch` MUST use
+ * `SELECT ... FROM outbox_events WHERE published_at IS NULL ORDER BY created_at ASC LIMIT $1 FOR UPDATE SKIP LOCKED`
+ * inside a single database transaction so concurrent pods never claim the same events.
+ */
+export const OUTBOX_CLAIM_SQL = `
+  SELECT id, aggregate_type, aggregate_id, event_type, payload, trace_id, span_id, created_at
+  FROM outbox_events
+  WHERE published_at IS NULL
+  ORDER BY created_at ASC
+  LIMIT $1
+  FOR UPDATE SKIP LOCKED;
+`;
 
 export interface OutboxRepository {
   fetchUnpublished(batchSize: number): Promise<OutboxMessage[]>;
@@ -63,7 +80,7 @@ export class OutboxWorker {
 
       if (messages.length > 0) {
         this.logger.info(
-          'Found unpublished outbox events; publishing batch',
+          'Claimed unpublished outbox events; publishing batch',
           { count: messages.length },
           'OUTBOX_PUBLISH_BATCH'
         );

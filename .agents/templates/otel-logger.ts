@@ -1,5 +1,6 @@
 /**
- * Production Structured JSON Logger with OpenTelemetry & AsyncLocalStorage Correlation
+ * Production Structured JSON Logger with OpenTelemetry, AsyncLocalStorage Correlation,
+ * and Automatic Recursive PII / Secret Redaction Scrubber.
  * Implements: Single-line NDJSON format, automatic trace_id & span_id injection, W3C Traceparent
  */
 
@@ -20,6 +21,34 @@ export enum LogLevel {
   WARN = 'WARN',
   ERROR = 'ERROR',
   FATAL = 'FATAL',
+}
+
+// 2. AUTOMATIC PII & SECRET REDACTION SCRUBBER (OWASP A09 / LLM06 / GDPR / UU PDP)
+const SENSITIVE_KEY_PATTERN =
+  /password|passphrase|secret|token|authorization|cookie|api[-_]?key|credit[-_]?card|card[-_]?number|cvv|pin|nik|ssn|private[-_]?key/i;
+
+export function redactSensitiveData(input: unknown, depth = 0): unknown {
+  if (depth > 8 || input === null || input === undefined) {
+    return input;
+  }
+
+  if (Array.isArray(input)) {
+    return input.map((item) => redactSensitiveData(item, depth + 1));
+  }
+
+  if (typeof input === 'object') {
+    const redactedObj: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
+      if (SENSITIVE_KEY_PATTERN.test(key)) {
+        redactedObj[key] = '[REDACTED]';
+      } else {
+        redactedObj[key] = redactSensitiveData(value, depth + 1);
+      }
+    }
+    return redactedObj;
+  }
+
+  return input;
 }
 
 export class StructuredLogger {
@@ -49,7 +78,7 @@ export class StructuredLogger {
     context?: Record<string, unknown>,
     action?: string
   ): void {
-    // 2. AUTOMATICALLY EXTRACT TRACE_ID & SPAN_ID FROM ACTIVE ASYNC STORAGE
+    // 3. AUTOMATICALLY EXTRACT TRACE_ID & SPAN_ID FROM ACTIVE ASYNC STORAGE
     const currentTrace = traceStorage.getStore();
 
     const logEntry = {
@@ -61,10 +90,10 @@ export class StructuredLogger {
       user_id: currentTrace?.userId,
       action: action || 'DEFAULT_ACTION',
       message,
-      context: context || {},
+      context: (redactSensitiveData(context || {}) as Record<string, unknown>),
     };
 
-    // 3. EMIT SINGLE-LINE JSON (NDJSON) TO STDOUT / STDERR
+    // 4. EMIT SINGLE-LINE JSON (NDJSON) TO STDOUT / STDERR
     const outputString = JSON.stringify(logEntry);
 
     if (level === LogLevel.ERROR || level === LogLevel.FATAL) {

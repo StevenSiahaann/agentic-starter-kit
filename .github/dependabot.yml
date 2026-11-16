@@ -1,0 +1,24 @@
+# ==============================================================================
+# AUTOMATED DEPENDENCY & CVE SECURITY UPDATES (OWASP A06 Compliance)
+# ==============================================================================
+version: 2
+updates:
+  # 1. Keep GitHub Actions workflows secure and up to date
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    commit-message:
+      prefix: "chore(ci)"
+
+  # 2. Keep Node.js / TypeScript dependencies patched against CVEs (when package.json exists)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
+
