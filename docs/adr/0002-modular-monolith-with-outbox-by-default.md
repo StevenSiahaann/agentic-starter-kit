@@ -30,3 +30,4 @@ We adopt the **Modular Monolith by Default, Microservices by Exception** archite
 ### Negative / Trade-offs
 - Must enforce architectural invariants (via `harness-verify.sh`) to prevent accidental tight coupling across module boundaries.
 - Database resource contention must be managed via proper B-Tree indexing, keyset pagination, and connection pooling.
+

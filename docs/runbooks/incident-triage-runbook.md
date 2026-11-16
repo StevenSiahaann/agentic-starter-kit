@@ -112,3 +112,4 @@ If the root cause is linked to a recent deployment or faulty feature rollout:
    - Collect error rates, Jaeger trace IDs, and log snapshots for the postmortem.
 4. **Trigger Blameless Postmortem**:
    - Run the skill `incident-rca-postmortem` to conduct 5-Whys analysis and generate `docs/postmortems/YYYY-MM-DD-incident-title.md`.
+

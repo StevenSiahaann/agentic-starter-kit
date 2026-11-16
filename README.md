@@ -9,7 +9,7 @@ This repository provides a **production-grade, universal AI engineering framewor
 ```text
 .
 ├── .agents/
-│   ├── VERSION                          # Semantic Version Stamp (2.5.0) for Multi-Project Sync Tracking
+│   ├── VERSION                          # Semantic Version Stamp (2.6.0) for Multi-Project Sync Tracking
 │   ├── hooks.json                       # Native Antigravity Lifecycle Hooks (PreToolUse & PostToolUse)
 │   ├── project-context.example.md       # Project-Specific Override Template (Protected during Sync)
 │   ├── rules/                           # 18 Modular Engineering Standards (3-Tier Progressive Disclosure)
@@ -86,11 +86,16 @@ This repository provides a **production-grade, universal AI engineering framewor
 ├── docs/                                # Visual Architecture, ADRs & SRE Runbooks
 │   ├── architecture/
 │   │   └── system-overview.md           # C4 Architecture Diagrams as Code (Mermaid)
+│   ├── checklists/
+│   │   └── production-readiness-checklist.md # 25-Point Pre-Launch Go/No-Go Verification Matrix
 │   ├── runbooks/
 │   │   └── incident-triage-runbook.md   # Systematic 6-Step Production Incident & SRE Triage SOP
 │   └── adr/                             # Architecture Decision Records (Michael Nygard format)
 │       ├── 0001-record-architecture-decisions.md
 │       └── 0002-modular-monolith-with-outbox-by-default.md
+├── .vscode/                             # Standard Recommended IDE Workspace Configuration
+│   ├── settings.json                    # Automated Formatting, Trim Whitespace, ESLint Integration
+│   └── extensions.json                  # Essential Extensions (Prettier, ESLint, Docker, Vitest)
 ├── .claude/                             # Native Claude Code Configuration
 │   ├── settings.json                    # Native Claude Code PreToolUse & PostToolUse Hooks
 │   ├── agents/                          # 6 Native Claude Code Subagents (*.md)
@@ -107,6 +112,9 @@ This repository provides a **production-grade, universal AI engineering framewor
 │       └── ci-cd-pipeline.yml           # Smart Adaptive Multi-Stage GitHub Actions Pipeline
 ├── AGENTS.md                            # Tier-1 Always-On Universal Entrypoint (~1,500 Tokens)
 ├── CLAUDE.md                            # Universal Adapter for Claude Code
+├── CONTRIBUTING.md                      # Day-1 Contributor & Developer Quickstart Guide
+├── SECURITY.md                          # Enterprise Security & Vulnerability Disclosure Policy
+├── LICENSE                              # Permissive MIT License for Commercial & Enterprise Reuse
 ├── .cursorrules                         # Universal Adapter for Cursor IDE
 ├── .windsurfrules                       # Universal Adapter for Windsurf (Codeium Cascade)
 └── .env.example                         # Standard Application Environment Variables Template

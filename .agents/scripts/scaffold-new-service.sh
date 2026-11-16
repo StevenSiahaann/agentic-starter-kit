@@ -165,3 +165,4 @@ echo -e "\n${GREEN}✅ Enterprise service '${SERVICE_NAME}' scaffolded successfu
 echo -e "Next steps:"
 echo -e "  cd ${TARGET_DIR}"
 echo -e "  make verify"
+

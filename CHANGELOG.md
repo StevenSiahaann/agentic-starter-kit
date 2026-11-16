@@ -6,6 +6,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [2.6.0] - 2026-11-16
+
+### Added
+- **Security Policy & Responsible Disclosure (`SECURITY.md`)**: Formal enterprise security policy defining supported version tracks, CVSS v3.1 triage SLAs (24h ack, 72h triage), and confidential reporting channels.
+- **Day-1 Contributor & Onboarding Guide (`CONTRIBUTING.md`)**: Comprehensive 5-minute developer quickstart (`make up`, `make verify`, `make canary`), architectural invariant checklist, and PR Definition of Done.
+- **25-Point Production Readiness Checklist (`docs/checklists/production-readiness-checklist.md`)**: Rigorous Go/No-Go gate covering Architecture, Security/RLS, Database, Observability/SRE, and Deployment.
+- **Zero-Config Workspace Settings (`.vscode/settings.json` & `extensions.json`)**: Uniform IDE environment with automatic formatting, EditorConfig, and ESLint integration.
+- **Permissive Open-Source License (`LICENSE`)**: MIT License for unencumbered commercial and enterprise adoption.
+
+---
+
 ## [2.5.0] - 2026-11-16
 
 ### Added

@@ -29,3 +29,4 @@ New ADRs will be generated using the `.agents/skills/adr-writer/` skill.
 
 ### Negative / Trade-offs
 - Requires discipline to update or supersede ADRs when requirements or technology landscapes change.
+

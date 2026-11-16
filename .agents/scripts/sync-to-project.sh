@@ -115,6 +115,20 @@ if [[ -d "$SOURCE_ROOT/docs/adr" ]]; then
     echo -e "${GREEN}  -> Initialized baseline Architecture Decision Records (ADRs).${NC}"
 fi
 
+mkdir -p "$TARGET_DIR/docs/checklists"
+if [[ ! -f "$TARGET_DIR/docs/checklists/production-readiness-checklist.md" ]]; then
+    cp "$SOURCE_ROOT/docs/checklists/production-readiness-checklist.md" "$TARGET_DIR/docs/checklists/production-readiness-checklist.md"
+    echo -e "${GREEN}  -> Installed 25-Point Production Readiness Checklist.${NC}"
+fi
+
+if [[ ! -f "$TARGET_DIR/SECURITY.md" ]]; then
+    cp "$SOURCE_ROOT/SECURITY.md" "$TARGET_DIR/SECURITY.md"
+fi
+
+if [[ ! -f "$TARGET_DIR/CONTRIBUTING.md" ]]; then
+    cp "$SOURCE_ROOT/CONTRIBUTING.md" "$TARGET_DIR/CONTRIBUTING.md"
+fi
+
 if [[ ! -f "$TARGET_DIR/.github/CODEOWNERS" ]]; then
     cp "$SOURCE_ROOT/.github/CODEOWNERS" "$TARGET_DIR/.github/CODEOWNERS"
 fi
