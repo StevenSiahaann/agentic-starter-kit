@@ -82,3 +82,4 @@ Governed by `.agents/rules/07-git-branch-and-pr.md`:
   - [x] Domain branch coverage $\ge 95\%$.
   - [x] New endpoints include OpenAPI 3.1 documentation.
   - [x] PR description follows `.github/PULL_REQUEST_TEMPLATE.md`.
+

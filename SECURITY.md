@@ -52,3 +52,4 @@ All codebases governed by this framework enforce automated runtime and pre-commi
 * **Pre-Command Safety Guard (`pre-command-guard.sh`)**: Forbids reading/writing live `.env` files, prevents piping untrusted curl commands to bash, and blocks destructive git commands.
 * **Static Secret Detection**: The verification harness (`harness-verify.sh`) continuously scans for AWS keys, GitHub tokens, Google API keys, and RSA/Ed25519 private keys.
 * **OWASP Top 10 Web & LLM Standards**: Enforced via `.agents/rules/01-security-and-owasp.md` and automated via `.agents/skills/owasp-security-audit/`.
+

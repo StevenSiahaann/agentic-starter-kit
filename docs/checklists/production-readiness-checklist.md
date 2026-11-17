@@ -53,3 +53,4 @@
 - [ ] **23. Expand-and-Contract Migrations**: Database DDL changes are strictly backwards-compatible; application code can roll back without breaking the schema.
 - [ ] **24. Operational Feature Kill-Switches**: High-risk features wrapped in feature flags capable of being disabled within 0 seconds without container redeployment.
 - [ ] **25. Contract-First API Spec**: OpenAPI 3.1 specification and Swagger UI validated and accessible at `/api/openapi.json` and `/api/docs`.
+
